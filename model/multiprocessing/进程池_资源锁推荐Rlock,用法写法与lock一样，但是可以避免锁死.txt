@@ -1,0 +1,15 @@
+
+
+Lock: 只能acquire一次，下一次acquire必须release后才能，不然会造成死锁
+
+如果使用RLock，那么acquire和release必须成对出现，即调用了n次acquire，必须调用n次的release才能真正释放所占用的琐。
+
+python Lock、RLock
+https://www.cnblogs.com/callyblog/p/11142218.html
+
+
+python多线程中Lock()与RLock()锁
+https://www.jianshu.com/p/fd9ba08bf0d5
+
+
+

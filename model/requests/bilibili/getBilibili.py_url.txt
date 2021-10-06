@@ -1,0 +1,1 @@
+https://github.com/Crepuscule-v/QQbot/blob/3d2eacb4e9d88f501c39aca1f31908fcfe18a73c/function/getBilibili.py

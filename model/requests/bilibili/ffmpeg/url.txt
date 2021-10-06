@@ -1,0 +1,5 @@
+用Python提取视频课程中的文稿
+https://zhuanlan.zhihu.com/p/87193682
+
+
+https://github.com/BtbN/FFmpeg-Builds/releases
