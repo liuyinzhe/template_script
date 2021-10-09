@@ -172,6 +172,142 @@ def judge_softclip(read, clip_min_len=10):
     else:
         return False
 
+def cigar_detect(read,cigar_idex,min_len=0):
+    '''
+    cigar_dic = {'M':0,'I':1,'D':2,'N':3,'S':4,'H':5,'P':6,'=':7,'X':8,'B':9}
+    cigar_idex = cigar_dic['M']
+    read_name ,info_list= cigar_detect(read,cigar_idex,min_len)
+    
+    # read_obj 对象
+    # min_len指定cigar之值的最小数量
+    # cigar_dic = {'M':0,'I':1,'D':2,'N':3,'S':4,'H':5,'P':6,'=':7,'X':8,'B':9}
+    # cigar_idex = cigar_dic['M']
+    基于比对, 根据 cigar_idex  获取 reads名，坐标信息，reads 数据来源坐标，变异长度以及 正负链信息 的列表
+    [chrom,ref_pos_start_tmp,ref_pos_end_tmp,read_pos_start_tmp,read_pos_end,var_len,stand]
+    主要用于 INS DEL INV 数据后续合并可用于稀有TRA的检测
+    alignment   meaning operation
+    M   BAM_CMATCH  0
+    I   BAM_CINS    1
+    D   BAM_CDEL    2
+    N   BAM_CREF_SKIP   3   #CIGAR: skip on the reference (e.g. spliced alignment)
+    S   BAM_CSOFT_CLIP  4
+    H   BAM_CHARD_CLIP  5
+    P   BAM_CPAD    6   # padding # P 6 padding (silent deletion from padded reference)
+    =   BAM_CEQUAL  7
+    X   BAM_CDIFF   8
+    B   BAM_CBACK   9   # It was never really used.
+    '''
+    
+    read_name = read.query_name
+    chrom = read.reference_name
+    ref_pos_start = read.reference_start # 0-base
+    ref_pos_end = read.reference_end # 0-base
+    read_pos_start = read.query_alignment_start # 0-base
+    read_pos_end = read.query_alignment_end # 0-base
+    query_length = read.query_length
+    #print(read_name,chrom,ref_pos_start,ref_pos_end,read_pos_start,read_pos_end,query_length)
+    stand = '-' if  read.is_reverse else '+' #  is negative 相对与参考基因组方向
+    #stand = '+'
+    
+    #循环cigarstring 或者 cigartuples
+    #cigarstring = read.cigarstring
+    cigartuples = read.cigartuples
+    #print(cigartuples[0:10])
+    type_info_list = []
+    target_info_lst = []
+    if cigar_idex == 4 or cigar_idex == 5: #单独统计 soft/hard softclip
+        flag,var_len = cigartuples[0]
+        if flag == 4 and var_len >= min_len: #softclip
+            read_pos_end_tmp = read_pos_start
+            read_pos_start_tmp = 0
+            ref_pos_end_tmp = ref_pos_start
+            ref_pos_start_tmp = None
+            if stand == '-':
+                read_pos_start_tmp, read_pos_end_tmp = change_reads_pos(query_length, read_pos_start_tmp, read_pos_end_tmp)
+            type_info_list = [chrom,ref_pos_start_tmp,ref_pos_end_tmp,read_pos_start_tmp,read_pos_end_tmp,var_len,stand]
+            target_info_lst.append(type_info_list)
+        
+        flag,var_len = cigartuples[-1]
+        if flag == 4 and var_len >= min_len: #softclip
+            read_pos_start_tmp = read_pos_end 
+            read_pos_end_tmp = query_length 
+            ref_pos_start_tmp = ref_pos_end
+            ref_pos_end_tmp = None
+            if stand == '-':
+                read_pos_start_tmp, read_pos_end_tmp = change_reads_pos(query_length, read_pos_start_tmp, read_pos_end_tmp)
+                # s = query_length - read_pos_end_tmp
+                # e = query_length - read_pos_start_tmp
+            type_info_list = [chrom,ref_pos_start_tmp,ref_pos_end_tmp,read_pos_start_tmp,read_pos_end,var_len,stand]
+            target_info_lst.append(type_info_list)
+        #target_info_lst = sorted(target_info_lst,key=lambda x:(x[1],x[2]))#根据参考基因组 start 与end 升序排序
+        return read_name, target_info_lst
+        #change_reads_pos(length, start, end)
+    tuple_len = len(cigartuples)
+    #for flag,var_len in cigartuples: # 不统计 softclip
+    for idx in range(tuple_len):
+        flag,var_len = cigartuples[idx]
+        # reads 长度统计 S5,H4,M0{7，8}，I1 
+        # ref 统计 M0{7,8}, D2，N3,P6，
+        read_flag_list = [0,1,4,5,7,8]
+        ref_flag_list = [0,2,3,6,7,8]
+
+        if idx == 0 :  #从左侧第一个碱基开始，包括 mismatch match ;
+            read_pos_start = 0  # 顺序是从左到右，第一个softclip,右侧的第二个softclip 不会遇到
+            read_pos_end = 0    # 第一个softclip 记录 start == end ,后面 计算时根据var_len 累加
+            ref_pos_end = ref_pos_start
+        #reads
+        if flag == 4 or cigar_idex == 5 : #  BAM_CSOFT_CLIP soft/hard clipping base ref 不统计，位于两侧
+            if idx == tuple_len: #最右侧
+                read_pos_start = read_pos_end
+                read_pos_end = read_pos_end + var_len # 左开右闭区间
+            else:
+                read_pos_start = var_len  # 顺序是从左到右，第一个softclip,右侧的第二个softclip 不会遇到
+                read_pos_end = var_len    # 第一个softclip 记录 start == end 
+            continue # reads 累加 ; ref 不统计 softclip/hardclip
+        
+
+        if stand == '-':
+            if flag in read_flag_list : # reads 长度累加有关的flag
+                read_pos_start = read_pos_end
+                read_pos_end = read_pos_start + var_len # 左开右闭区间
+            else:
+                read_pos_start = read_pos_end
+                read_pos_end = read_pos_start
+        else:
+            if flag in read_flag_list : # reads 长度累加有关的flag
+                #print(read_pos_start,read_pos_end)
+                read_pos_start = read_pos_end
+                read_pos_end = read_pos_start + var_len # 左开右闭区间
+            else:
+                #print(read_pos_start,read_pos_end)
+                read_pos_start = read_pos_end
+                read_pos_end = read_pos_start
+
+        #ref
+        if flag in ref_flag_list :  # ref 坐标 长度累加有关的flag
+            #print(ref_pos_start,ref_pos_end)
+            ref_pos_start = ref_pos_end
+            ref_pos_end =  ref_pos_start + var_len # 左开右闭闭区间
+        else:
+            ref_pos_start = ref_pos_end 
+            ref_pos_end =  ref_pos_start
+        
+        
+        if var_len >= min_len and cigar_idex == flag :
+            #print(var_len,min_len)
+            if stand == '-':
+                read_pos_start_tmp, read_pos_end_tmp = change_reads_pos(query_length, read_pos_start, read_pos_end)
+                #read_pos_start_tmp, read_pos_end_tmp = read_pos_start, read_pos_end
+                #print(read_name,read_pos_start, read_pos_end,read_pos_start_tmp, read_pos_end_tmp,cigarstring)
+                #print(read.query_alignment_start,read.query_alignment_end,read_pos_start, read_pos_end,query_length,read_pos_start_tmp, read_pos_end_tmp)
+                type_info_list = [chrom,ref_pos_start,ref_pos_end,read_pos_start_tmp,read_pos_end_tmp,var_len,stand]
+            else:
+                type_info_list = [chrom,ref_pos_start,ref_pos_end,read_pos_start,read_pos_end,var_len,stand]
+                #print(type_info_list)
+            target_info_lst.append(type_info_list)
+    #target_info_lst = sorted(target_info_lst,key=lambda x:(x[1],x[2]))#根据参考基因组 start 与end 升序排序
+    return read_name, target_info_lst
+
 
 #
 ##
@@ -266,7 +402,6 @@ def get_args():
         args = parser.parse_args()
 
     return args
-
 
 
 if __name__ == "__main__":
