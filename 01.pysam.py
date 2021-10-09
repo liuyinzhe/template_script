@@ -403,6 +403,25 @@ def get_args():
 
     return args
 
+def main():
+    
+    bam_file='check.reads.sorted.bam'
+    samfile = pysam.AlignmentFile(bam_file, "rb")
+    allreads=samfile.fetch(contig='chrX', start=1234567, stop=1234567)
+    all_lst=[]
+    cigar_dic = {'M':0,'I':1,'D':2,'N':3,'S':4,'H':5,'P':6,'=':7,'X':8,'B':9}
+    for read in allreads:
+        reference_start = read.reference_start
+        query_alignment_start = read.query_alignment_start
+        query_alignment_end = read.query_alignment_end
+        query_length = read.query_length
+
+        cigar_idex = cigar_dic['M']
+        min_len=0
+        if read.mapping_quality >20 and not read.is_secondary:
+                    read_name ,info_list= cigar_detect(read,cigar_idex,min_len)
+                    if len(info_list)>0:
+                        print([read_name]+info_list)
 
 if __name__ == "__main__":
     if sys.version[0] == "3":
