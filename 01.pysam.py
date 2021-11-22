@@ -182,7 +182,8 @@ def cigar_detect(read,cigar_idex,min_len=0):
     # min_len指定cigar之值的最小数量
     # cigar_dic = {'M':0,'I':1,'D':2,'N':3,'S':4,'H':5,'P':6,'=':7,'X':8,'B':9}
     # cigar_idex = cigar_dic['M']
-    基于比对, 根据 cigar_idex  获取 reads名，坐标信息，reads 数据来源坐标，变异长度以及 正负链信息 的列表
+    基于比对, 根据 cigar_idex  获取 reads名，坐标信息，reads 数据来源坐标，变异长度以及 正负链信息 的列表;
+    NOTE: reads 的相对坐标调整为了测序reads 的想对坐标，而不是比对的，如果需要比对的信息，请用cigar2tab，或者修改或者去掉此函数中change_reads_pos函数的调用
     [chrom,ref_pos_start_tmp,ref_pos_end_tmp,read_pos_start_tmp,read_pos_end,var_len,stand]
     主要用于 INS DEL INV 数据后续合并可用于稀有TRA的检测
     alignment   meaning operation
@@ -308,6 +309,131 @@ def cigar_detect(read,cigar_idex,min_len=0):
     #target_info_lst = sorted(target_info_lst,key=lambda x:(x[1],x[2]))#根据参考基因组 start 与end 升序排序
     return read_name, target_info_lst
 
+def cigar2tab(read):
+    '''
+    解析为列表
+    alignment   meaning operation
+    M   BAM_CMATCH  0
+    I   BAM_CINS    1
+    D   BAM_CDEL    2
+    N   BAM_CREF_SKIP   3   #CIGAR: skip on the reference (e.g. spliced alignment)
+    S   BAM_CSOFT_CLIP  4
+    H   BAM_CHARD_CLIP  5
+    P   BAM_CPAD    6   # padding # P 6 padding (silent deletion from padded reference)
+    =   BAM_CEQUAL  7
+    X   BAM_CDIFF   8
+    B   BAM_CBACK   9   # It was never really used.
+
+    * BAM_CIGAR_TYPE  QUERY  REFERENCE
+    * --------------------------------
+    * BAM_CMATCH      1      1
+    * BAM_CINS        1      0
+    * BAM_CDEL        0      1
+    * BAM_CREF_SKIP   0      1
+    * BAM_CSOFT_CLIP  1      0
+    * BAM_CHARD_CLIP  0      0
+    * BAM_CPAD        0      0
+    * BAM_CEQUAL      1      1
+    * BAM_CDIFF       1      1
+    * BAM_CBACK       0      0
+    * --------------------------------
+    '''
+    
+    read_name = read.query_name
+    chrom = read.reference_name
+    ref_pos_start = read.reference_start # 0-base
+    #ref_pos_end = read.reference_end # 0-base
+    ref_pos_end = 0 #
+    read_pos_start = read.query_alignment_start # 0-base
+    read_pos_end = read.query_alignment_end # 0-base
+    query_length = read.query_length
+    #print(read_name,chrom,ref_pos_start,ref_pos_end,read_pos_start,read_pos_end,query_length)
+    stand = '-' if  read.is_reverse else '+' #  is negative 相对与参考基因组方向
+    #stand = '+'
+    target_info_lst = []
+    cigar_lst = ['M','I','D','N','S','H','P','=','X','B']
+    '''
+     * BAM_CIGAR_TYPE  QUERY  REFERENCE
+    0* BAM_CMATCH      1      1
+    1* BAM_CINS        1      0
+    2* BAM_CDEL        0      1
+    3* BAM_CREF_SKIP   0      1         #填N的区域
+    4* BAM_CSOFT_CLIP  1      0
+    5* BAM_CHARD_CLIP  0      0
+    6* BAM_CPAD        0      0         #假设https://www.jianshu.com/p/ff6187c97155
+    7* BAM_CEQUAL      1      1
+    8* BAM_CDIFF       1      1
+    9* BAM_CBACK       0      0
+    '''
+    stand = '-' if  read.is_reverse else '+' #  is negative 相对与参考基因组方向
+    cigartuples = read.cigartuples
+    for idx,var_len in cigartuples:
+        # reads 长度统计 S5,H4,M0{7，8}，I1 
+        # ref 统计 M0{7,8}, D2，N3,P6，
+        read_idx_list = [0,1,4,5,7,8] # [M，I,S,H,=,X]
+        ref_idx_list = [0,2,3,6,7,8] # [M,D,N,P,=,X]
+
+        if idx == 0: # BAM_CMATCH
+            read_pos_start = read_pos_end
+            read_pos_end = read_pos_start + var_len # 左开右闭区间
+            if ref_pos_end == 0:
+                ref_pos_start = ref_pos_start
+            else:
+                ref_pos_start = ref_pos_end
+            ref_pos_end = ref_pos_start + var_len # 左开右闭区间
+
+        elif idx == 1: # BAM_CINS  # ref pos 相等
+            read_pos_start = read_pos_end
+            read_pos_end = read_pos_start + var_len
+            ref_pos_start = ref_pos_end
+            ref_pos_end = ref_pos_end # 左开右闭区间
+
+        elif idx == 2: # BAM_CDEL # read pos 相等
+            read_pos_start = read_pos_end
+            read_pos_end = read_pos_end
+            ref_pos_start = ref_pos_end
+            ref_pos_end = ref_pos_start + var_len   # 左开右闭区间
+
+        elif idx == 3: # BAM_CREF_SKIP  # 长度如果连续，则不是S/D[4/5],read ref pos 都累加
+            read_pos_start = read_pos_end
+            read_pos_end = read_pos_start + var_len
+            ref_pos_start = ref_pos_end
+            ref_pos_end = ref_pos_start + var_len   # 左开右闭区间
+
+        elif idx == 4: # BAM_CSOFT_CLIP # ref pos 相等
+            read_pos_start = read_pos_end
+            read_pos_end = read_pos_start + var_len
+            if ref_pos_end == 0:
+                ref_pos_start = ref_pos_start
+            else:
+                ref_pos_start = ref_pos_end
+            ref_pos_end = ref_pos_end  # 左开右闭区间
+
+        elif idx == 7: # BAM_CEQUAL #
+            read_pos_start = read_pos_end
+            read_pos_end = read_pos_start + var_len
+            if ref_pos_end == 0:
+                ref_pos_start = ref_pos_start
+            else:
+                ref_pos_start = ref_pos_end
+            ref_pos_end = ref_pos_start + var_len  # 左开右闭区间
+
+        elif idx == 8: # BAM_CDIFF #
+            read_pos_start = read_pos_end
+            read_pos_end = read_pos_start + var_len
+            if ref_pos_end == 0:
+                ref_pos_start = ref_pos_start
+            else:
+                ref_pos_start = ref_pos_end
+            ref_pos_end = ref_pos_start + var_len  # 左开右闭区间
+
+        else: #5,BAM_CHARD_CLIP  6,BAM_CPAD  9,BAM_CBACK
+            continue
+
+        var_type = cigar_lst[idx]
+        tmp_lst = [read_name,chrom,ref_pos_start,ref_pos_end,read_pos_start,read_pos_end,var_len,query_length,var_type,stand]
+        target_info_lst.append(tmp_lst)
+    return target_info_lst
 
 #
 ##
