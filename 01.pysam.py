@@ -311,7 +311,7 @@ def cigar_detect(read,cigar_idex,min_len=0):
 
 def cigar2tab(read):
     '''
-    解析为列表
+    解析为列表;由于可能遇到较高的深度，使用yield 返回结果；避免内存爆炸
     alignment   meaning operation
     M   BAM_CMATCH  0
     I   BAM_CINS    1
@@ -407,7 +407,7 @@ def cigar2tab(read):
                 ref_pos_start = ref_pos_start
             else:
                 ref_pos_start = ref_pos_end
-            ref_pos_end = ref_pos_end  # 左开右闭区间
+            ref_pos_end = ref_pos_start  # 左开右闭区间
 
         elif idx == 7: # BAM_CEQUAL #
             read_pos_start = read_pos_end
@@ -432,8 +432,9 @@ def cigar2tab(read):
 
         var_type = cigar_lst[idx]
         tmp_lst = [read_name,chrom,ref_pos_start,ref_pos_end,read_pos_start,read_pos_end,var_len,query_length,var_type,stand]
-        target_info_lst.append(tmp_lst)
-    return target_info_lst
+        #target_info_lst.append(tmp_lst)
+        yield tmp_lst
+    #return target_info_lst
 
 #
 ##
