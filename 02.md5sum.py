@@ -3,6 +3,7 @@ from pathlib import Path
 import io
 
 #参考自#https://www.iteye.com/blog/ryan-liu-1530029
+#pathlib#https://zhuanlan.zhihu.com/p/87940289
 def md5hex(word):
     """ MD5加密算法，返回32位小写16进制符号 """
     #python3#all strings are now Unicode
