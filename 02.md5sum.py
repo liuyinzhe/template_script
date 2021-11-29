@@ -32,16 +32,19 @@ def md5sum(fname):
         else: #最后要将游标放回文件开头
             fh.seek(0)
     m = hashlib.md5()
+    fname_obj = Path(fname)
     if isinstance(fname, str) \
-            and Path.exists(fname):
+            and fname_obj.exists():
         with open(fname, "rb") as fh:
             for chunk in read_chunks(fh):
                 m.update(chunk)
     #上传的文件缓存 或 已打开的文件流
     elif fname.__class__.__name__ in ["StringIO", "StringO"] \
-                or isinstance(fname, file):
+                or fname_obj.is_file():
         for chunk in read_chunks(fname):
             m.update(chunk)
     else:
         return ""
     return m.hexdigest()
+
+print(md5sum(r'C:\Users\xxxx\Desktop\xxx.txt'))
