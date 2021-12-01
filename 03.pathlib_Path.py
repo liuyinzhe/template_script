@@ -3,7 +3,7 @@ import time
 import math
 import os
 
-a=Path(r'D:\刘银喆\learn\pathlib_Path.py')
+a=Path(r'D:\xxx\pathlib_Path.py')
 print(a.stat().st_size)
 '''
 st_mode: inode 保护模式
