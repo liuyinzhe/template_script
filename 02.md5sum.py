@@ -40,6 +40,9 @@ def md5sum(fname):
             for chunk in read_chunks(fh):
                 m.update(chunk)
     #上传的文件缓存 或 已打开的文件流
+    #https://blog.csdn.net/zengxiantao1994/article/details/60466087
+    #cStringIO.StringO 
+    #StringIO.StringIO
     elif fname.__class__.__name__ in ["StringIO", "StringO"] \
                 or fname_obj.is_file():
         for chunk in read_chunks(fname):
