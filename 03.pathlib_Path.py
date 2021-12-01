@@ -151,4 +151,89 @@ def getdirsize(dir, target='B'):
     return size
  
 ######################end       file size          end#####################
+
+###################    目录扫描   #######################
  
+def GetFolderCatalogPath(pwd):
+    '''
+    param: str  "pwd"
+    return:list [ str ]
+    '''
+    catalog_lst=[]
+    target_path=Path(pwd)
+    #dirname = child.parent
+    #dirname=target_path
+    for child in target_path.iterdir():
+        if child.is_dir():
+            #对于空文件夹跳过
+            if not os.listdir(str(child)):
+                print("empty directory: "+str(child))
+                continue
+            catalog_lst.append(child)
+        elif child.is_file():
+            pass
+    return catalog_lst
+ 
+def GetFolderCatalogName(pwd):
+    '''
+    param: str  "pwd"
+    return:list [ str ]
+    '''
+    catalog_lst=[]
+    target_path=Path(pwd)
+    #dirname = child.parent
+    #dirname=target_path
+    for child in target_path.iterdir():
+        if child.is_dir():
+            #对于空文件夹跳过
+            if not os.listdir(str(child)):
+                print("empty directory: "+str(child))
+                continue
+            catalog_lst.append(child.name)
+        elif child.is_file():
+            pass
+    return catalog_lst
+ 
+ 
+def GetAllFilePaths(pwd):
+    '''
+    param: str  "pwd"
+    return:dirname pathlab_obj
+    return:list [ str ]
+    #https://zhuanlan.zhihu.com/p/36711862
+    #https://www.cnblogs.com/sigai/p/8074329.html
+    '''
+    files_lst = []
+    target_path=Path(pwd)
+    for child in target_path.rglob('*'):
+        if child.is_dir():
+            pass
+        elif child.is_file():
+            files_lst.append(str(child))
+    return files_lst
+ 
+ 
+def GetAllFileNames(pwd):
+    '''
+    param: str  "pwd"
+    return:dirname pathlab_obj
+    return:list [ str ]
+    #https://zhuanlan.zhihu.com/p/36711862
+    #https://www.cnblogs.com/sigai/p/8074329.html
+    '''
+    files_lst = []
+    #字符串路径 工厂化为 pathlib 对象，可使用pathlib 对象的方法(函数)/属性(私有变量)
+    target_path = Path(pwd)
+    for child in target_path.rglob('*'):
+        if child.is_dir():
+            pass
+        elif child.is_file():
+            #child完整路径,child.relative_to(pwd) 相对于pwd的相对路径，其实就是文件名;可以通过child.name获得
+            files_lst.append(child.relative_to(pwd))
+            #print(child.relative_to(pwd))
+    return files_lst
+ 
+##################end   目录扫描  end######################
+ 
+
+    
