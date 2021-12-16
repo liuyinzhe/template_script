@@ -195,7 +195,7 @@ def GetFolderCatalogName(pwd):
     return catalog_lst
  
  
-def GetAllFilePaths(pwd):
+def GetAllFilePaths(pwd,wildcard='*'):
     '''
     param: str  "pwd"
     return:dirname pathlab_obj
@@ -205,7 +205,7 @@ def GetAllFilePaths(pwd):
     '''
     files_lst = []
     target_path=Path(pwd)
-    for child in target_path.rglob('*'):
+    for child in target_path.rglob(wildcard):
         if child.is_dir():
             pass
         elif child.is_file():
