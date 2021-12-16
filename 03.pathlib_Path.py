@@ -3,6 +3,11 @@ import time
 import math
 import os
 
+# 写在前面
+# pathlib 除了官方文档，推荐这两个网址学习
+# https://www.cnblogs.com/poloyy/p/12435628.html
+# https://zhuanlan.zhihu.com/p/87940289
+
 a=Path(r'D:\xxx\pathlib_Path.py')
 print(a.stat().st_size)
 '''
