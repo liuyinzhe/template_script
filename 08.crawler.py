@@ -4,9 +4,12 @@ import asyncio
 from bs4 import BeautifulSoup
 #from lxml import etree
 
+
 #https://curlconverter.com/
 #https://reqbin.com/curl
 
+#todo:
+#JA3
 
 def get_token(html):
     '''
