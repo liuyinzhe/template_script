@@ -1,5 +1,11 @@
+import httpx
+import asyncio
 
+from bs4 import BeautifulSoup
+#from lxml import etree
 
+#https://curlconverter.com/
+#https://reqbin.com/curl
 
 
 def get_token(html):
