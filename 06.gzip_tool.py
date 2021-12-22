@@ -24,3 +24,29 @@ def get_gzip_ISIZE(gzip_file):
 with open('/home/joe/file.txt', 'rb') as f_in:
     with gzip.open('/home/joe/file.txt.gz', 'wb') as f_out:
         shutil.copyfileobj(f_in, f_out)
+
+ def check_complete_file(task_list):
+    uncomplete_task_list = []
+    for child_jobs_list in task_list: # split_num
+        sizeInBytes,file_type,url,outfile = child_jobs_list
+        file_obj = Path(outfile)
+        # 检查文件是否存在
+        if file_obj.exists():
+            if outfile.endswith(".gz"):
+                # 存在，则检查大小
+                isize = get_gzip_ISIZE(file_obj) # gzip input size
+                size_mod = sizeInBytes%(2**32)
+                if size_mod == isize:
+                    continue
+                else:
+                    uncomplete_task_list.append(child_jobs_list)
+            else: 
+                # 检查文件对象大小
+                fsize=file_obj.stat().st_size
+                if sizeInBytes == fsize:
+                    continue
+                else:
+                    uncomplete_task_list.append(child_jobs_list)
+        else:
+            uncomplete_task_list.append(child_jobs_list)
+    return uncomplete_task_list
