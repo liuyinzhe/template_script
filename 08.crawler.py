@@ -24,6 +24,7 @@ def get_token(html):
 
 def construction_multipart_encoded_str (new_list_tuple,boundary_str):
     '''
+    format_str = construction_multipart_encoded_str(a_list+b_list,'--'+boundary_str)
     #boundary_str
     ------WebKitFormBoundaryhTmOInhA14nYnzK0
     #分隔符：--
