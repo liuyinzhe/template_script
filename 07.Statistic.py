@@ -12,7 +12,8 @@ def cut_bin(lst,bin_len):
     '''
     lst_sorted = sorted(lst)
     min_limit = min(lst)
-    upper_limit = max(lst) +1 + bin_len
+    #upper_limit = max(lst) +1 + bin_len
+    upper_limit = max(lst) +1
     #list_arr0=list(filter( lambda x :x < upper_limit, range(bin_len,upper_limit,bin_len)))
     # 整除
     coefficient = min_limit//bin_len
@@ -38,7 +39,8 @@ def cut_cols_bin(lst,bin_len):
     col1_lst =  [x[0] for x in lst]
     col2_lst =  [x[1] for x in lst]
     min_limit = int(min(col1_lst))
-    upper_limit = int(max(col1_lst)) +1 + bin_len
+    #upper_limit = int(max(col1_lst)) +1 + bin_len
+    upper_limit = int(max(col1_lst)) +1
     #list_arr0=list(filter( lambda x :x < upper_limit, range(bin_len,upper_limit,bin_len)))
     # 整除
     coefficient = min_limit//bin_len
