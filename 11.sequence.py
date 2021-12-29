@@ -38,7 +38,7 @@ def format_str(string,format_len):
     return new_string
         
 
-def get_seq(file_nm,id_list,format_len=0):
+def fa_get_seq(file_nm,id_list,format_len=0):
     '''
     fasta 提取序列
     format_len 0 原样输出
@@ -53,11 +53,11 @@ def get_seq(file_nm,id_list,format_len=0):
                 line= str(bytes_line,encoding='utf-8')
                 if line.startswith('>'):
                     # output
+                    if len(id_list)==0:
+                        break
                     if seq_id and seq_id in id_list:
                         # 在就直接返回yield,清空
                         id_list.remove(seq_id)
-                        if len(id_list)==0:
-                            break
                         if format_len != 0:
                             input_str = re.sub('[\n\r]','',seq)
                             seq = format_str(input_str,format_len)
@@ -80,11 +80,11 @@ def get_seq(file_nm,id_list,format_len=0):
             for line in fh:
                 if line.startswith('>'):
                     # output
+                    if len(id_list)==0:
+                        break
                     if seq_id and seq_id in id_list:
                         # 在就直接返回yield,清空
                         id_list.remove(seq_id)
-                        if len(id_list)==0:
-                            break
                         if format_len != 0:
                             input_str = re.sub('[\n\r]','',seq)
                             seq = format_str(input_str,format_len)
