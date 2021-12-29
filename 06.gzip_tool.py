@@ -20,7 +20,6 @@ def get_gzip_ISIZE(gzip_file):
 
 #Example of how to GZIP compress an existing file
 
-
 with open('/home/joe/file.txt', 'rb') as f_in:
     with gzip.open('/home/joe/file.txt.gz', 'wb') as f_out:
         shutil.copyfileobj(f_in, f_out)
@@ -50,3 +49,21 @@ with open('/home/joe/file.txt', 'rb') as f_in:
         else:
             uncomplete_task_list.append(child_jobs_list)
     return uncomplete_task_list
+
+
+def check_gzip_format(file):
+    '''
+    绝大多数gzip 前两位为"\x1f\x8b",但是不全都灵验
+    '''
+    # suffix check
+    if file.endswith('.gz'):
+        return True
+    #magic_number check
+    magic_flag = False
+    with open(file,mode='rb') as fh:
+        magic_number =fh.read(2)
+        if magic_number==b'\x1f\x8b':
+            magic_flag = True
+        else:
+            magic_flag = False
+    return magic_flag
