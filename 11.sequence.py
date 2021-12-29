@@ -56,6 +56,11 @@ def get_seq(file_nm,id_list,format_len=0):
                     if seq_id and seq_id in id_list:
                         # 在就直接返回yield,清空
                         id_list.remove(seq_id)
+                        if len(id_list)==0:
+                            break
+                        if format_len != 0:
+                            input_str = re.sub('[\n\r]','',seq)
+                            seq = format_str(input_str,format_len)
                         yield seq_id,seq.strip()
                     # new obj
                     seq = ''
@@ -78,6 +83,11 @@ def get_seq(file_nm,id_list,format_len=0):
                     if seq_id and seq_id in id_list:
                         # 在就直接返回yield,清空
                         id_list.remove(seq_id)
+                        if len(id_list)==0:
+                            break
+                        if format_len != 0:
+                            input_str = re.sub('[\n\r]','',seq)
+                            seq = format_str(input_str,format_len)
                         yield seq_id,seq.strip()
                     # new obj
                     seq = ''
