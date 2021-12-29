@@ -1,7 +1,6 @@
 import gzip
 import re
-#yield 返回结果
-#解析文件，一个列表
+
 
 def check_gzip_format(file_nm):
     '''
