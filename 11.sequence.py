@@ -66,6 +66,9 @@ def get_seq(file_nm,id_list,format_len=0):
             if seq_id in id_list:
                 # 在就直接返回yield,清空
                 id_list.remove(seq_id)
+                if format_len != 0:
+                    input_str = re.sub('[\n\r]','',seq)
+                    seq = format_str(input_str,format_len)
                 yield seq_id,seq.strip()
     else:
         with open(file_nm,mode='r') as fh:
@@ -85,4 +88,7 @@ def get_seq(file_nm,id_list,format_len=0):
             if seq_id in id_list:
                 # 在就直接返回yield,清空
                 id_list.remove(seq_id)
+                if format_len != 0:
+                    input_str = re.sub('[\n\r]','',seq)
+                    seq = format_str(input_str,format_len)
                 yield seq_id,seq.strip()
