@@ -67,3 +67,20 @@ def check_gzip_format(file):
         else:
             magic_flag = False
     return magic_flag
+
+def check_gzip_format(file_nm):
+    '''
+    绝大多数gzip 前两位为"\x1f\x8b",但是不全都灵验
+    '''
+    # suffix check
+    if file_nm.endswith('.gz'):
+        return True
+    #magic_number check
+    magic_flag = False
+    with open(file_nm,mode='rb') as fh:
+        magic_number =fh.read(2)
+        if magic_number==b'\x1f\x8b':
+            magic_flag = True
+        else:
+            magic_flag = False
+    return magic_flag
