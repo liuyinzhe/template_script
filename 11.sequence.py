@@ -27,6 +27,9 @@ def format_str(string,format_len):
     start = 0
     new_string = ''
     str_len = len(string)
+    if str_len<=format_len:
+        new_string = string
+        return new_string
     for idx in range(str_len):
         now_len = idx+1
         if now_len % format_len == 0 :
