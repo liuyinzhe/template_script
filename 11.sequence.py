@@ -41,7 +41,7 @@ def format_str(string,format_len):
     return new_string
         
 
-def fa_get_seq(file_nm,id_list,format_len=0):
+def fa_get_seq(file_nm,id_lists,format_len=0):
     '''
     fasta 提取序列
     format_len 0 原样输出
@@ -50,6 +50,7 @@ def fa_get_seq(file_nm,id_list,format_len=0):
     '''
     seq_id = ''
     seq = ''
+    id_list = id_lists.copy()
     if check_gzip_format(file_nm) :
         with gzip.open(file_nm,mode='rb') as fh:
             for bytes_line in fh:
