@@ -1,3 +1,6 @@
+import  random
+from hashlib import md5
+
 def random_string(length):
     '''
     数字大小写
@@ -21,3 +24,27 @@ def random_string(length):
     random.shuffle(list_passwd_all) #打乱列表顺序
     str_passwd = ''.join(list_passwd_all).strip() #将列表转化为字符串
     return str_passwd
+
+
+
+# 摘要算法
+
+# 加盐的md5
+# 获取原始密码+salt的md5值
+def create_md5(pwd,salt):
+    md5_obj = md5()
+    #print(md5().update(pwd.encode('utf-8')))
+    md5_obj.update((pwd + salt).encode('utf-8'))
+    return md5_obj.hexdigest()
+
+
+# 原始密码
+pwd = '123456'
+# 随机生成4位salt
+salt = 'salt'
+# 加密后的密码
+md5 = create_md5(pwd, salt)
+
+print ('[pwd]\n', pwd)
+print ('[salt]\n', salt)
+print ('[md5]\n', md5)
