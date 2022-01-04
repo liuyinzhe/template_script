@@ -33,7 +33,8 @@ def random_string(length):
 # 获取原始密码+salt的md5值
 def create_md5(pwd,salt):
     md5_obj = md5()
-    #print(md5().update(pwd.encode('utf-8')))
+    # print(md5().update(pwd.encode('utf-8')))
+    # 大文件可bytes 多份 update 顺序一致,最终md5也一致
     md5_obj.update((pwd + salt).encode('utf-8'))
     return md5_obj.hexdigest()
 
