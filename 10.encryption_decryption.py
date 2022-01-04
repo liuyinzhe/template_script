@@ -47,4 +47,6 @@ md5 = create_md5(pwd, salt)
 
 print ('[pwd]\n', pwd)
 print ('[salt]\n', salt)
-print ('[md5]\n', md5)
+print ('[md5_32]\n', md5)
+# 16位 md5
+print ('[md5_16]\n', md5[8:-8])
