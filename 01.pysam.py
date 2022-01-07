@@ -32,6 +32,31 @@ def reverse_complement(seq):
     rule = {'A': 'T', 'T': 'A', 'G': 'C', 'C': 'G', 'N': 'N'}
     return ''.join([rule[each] for each in seq.upper()][::-1])
 
+def split_list(raw_list,split_num):
+    '''
+    将一个大列表分割为包含多个小列表的大列表
+    用于后面多进程分析
+    '''
+    list_len=len(raw_list)
+    split_len=(list_len//split_num)+1
+    sub_len=list_len
+    result_list=[]
+    sub_list=[]
+    start_idx=0
+    for index in range(0,list_len):
+        if index !=0:
+            if index==list_len-1:
+                sub_list=raw_list[start_idx:index+1]
+                result_list.append(sub_list)
+                return result_list
+            if index%split_len==0:
+                sub_list=raw_list[start_idx:index]
+                result_list.append(sub_list)
+                start_idx=index
+        elif index ==0 and list_len==1:
+            result_list.append(raw_list)
+    return result_list
+
 
 def dicMeg(dic1,dic2):
     """
