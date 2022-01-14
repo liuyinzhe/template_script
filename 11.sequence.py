@@ -40,7 +40,18 @@ def format_str(string,format_len):
         new_string +=string[order:]
     return new_string
         
-
+def format_str(input_str,width):
+    '''
+    字符按照长度换行,思路2，改进版
+    '''
+    out_str = ''
+    for idx in range(0,len(input_str),width):
+        if idx ==0 :
+            out_str=input_str[idx:idx+width]
+        else:
+            out_str += '\n'+input_str[idx:idx+width]
+    return out_str
+    
 def fa_get_seq(file_nm,id_lists,format_len=0):
     '''
     fasta 提取序列
