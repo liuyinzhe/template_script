@@ -59,6 +59,7 @@ async def async_donwload(cookies,child_jobs_list,idx,sem):
             else:
                 out = open(outfile,mode='wb')
             response_size = 0
+            #Streaming responses#www.python-httpx.org/compatibility/
             async with client.stream('GET', url,timeout=timeout) as response:
                 status_code = response.status_code
                 #if "The server didn't respond in time." in response.text:
