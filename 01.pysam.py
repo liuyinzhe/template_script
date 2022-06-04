@@ -488,6 +488,116 @@ def parse_cigar4count(read):
     mat_count=len(mat_len_list)
     softclip_count=len(softclip_len_list)
     return ins_count,del_count,mis_count,mat_count,softclip_count
+
+def max_depth_region(bam,reference_name,chr_len):
+    '''
+    import pysam
+    检测单个染色体中平均深度最大的区间，也可以修改为目标区域内深度最大的比对区域
+    '''
+    all_depth = []
+    pos_flag=0
+    start_pos=0
+    ref_pos = 0 # 
+    last_ref_pos = 0 #
+    
+    base_depth=0 # 全局变量
+    temp_pos =[] # 存储平均深度最大所有坐标
+    temp_cov =[] # 存储平均深度最大所有碱基深度
+
+    region_mean_depth_max = 0
+    temp_pos_max = []
+    temp_cov_max = []
+    samfile = pysam.AlignmentFile(bam, "rb" )
+    #pileupcolumn,直接到有比对的位置,第一个位置就是有覆盖深度的地方
+    #for pileupcolumn in samfile.pileup( reference_name, 0, chr_len,max_depth=8000,truncate=True,stepper="nofilter"):
+    for pileupcolumn in samfile.pileup( reference_name, 0, chr_len):
+        #reference_name = pileupcolumn.reference_name
+        base_coverage = pileupcolumn.nsegments
+        ref_pos = pileupcolumn.reference_pos
+        all_depth.append([ref_pos,base_coverage])
+        #print(ref_pos,base_coverage)
+        #一次性 flag
+        if pos_flag == 0:
+            pos_flag = 1
+            start_pos = ref_pos
+            temp_pos.append(ref_pos)
+            temp_cov.append(base_coverage)
+            continue
+        #获取上一个位置
+        last_ref_pos = temp_pos[-1]
+        if ref_pos - last_ref_pos > 2000: # 大于2k,则作为新的片段,但是实际中不应出现大于2k的del;完全连续贯穿
+            region_len=last_ref_pos-start_pos+1
+            base_depth=sum(temp_cov)
+            region_mean_depth = float("{:.2f}".format(base_depth/region_len))
+            if region_mean_depth > region_mean_depth_max:
+                region_mean_depth_max = region_mean_depth
+                temp_pos_max = temp_pos
+                temp_cov_max = temp_cov
+            
+            start_pos = ref_pos # 新的起始坐标
+            # 区域起始坐标,从起始开始计算
+            # 清零从新记录,节省内存
+            temp_pos = []
+            temp_cov = []
+            # 添加
+            temp_pos.append(ref_pos)
+            temp_cov.append(base_coverage)
+            
+        else:#正常连贯区域
+            last_ref_pos = ref_pos
+            temp_pos.append(ref_pos)
+            temp_cov.append(base_coverage)
+
+    # 最后一个区间,补充上最后一个终止
+    if ref_pos == last_ref_pos:
+        region_len = ref_pos-start_pos+1
+        base_depth=sum(temp_cov)
+        region_mean_depth = float("{:.2f}".format(base_depth/region_len))
+        if region_mean_depth > region_mean_depth_max:
+            region_mean_depth_max = region_mean_depth
+            temp_pos_max = temp_pos
+            temp_cov_max = temp_cov
+
+    samfile.close()
+    #由于两侧深度低,中间深度高, 取Q1-1.5iqr(Q3-Q1) 作为异常值边界
+    if len(temp_cov_max) >1:
+        lower_q,median,higher_q= calc_quantile(temp_cov_max)
+        iqr = higher_q - lower_q
+        t1 = lower_q - 1.5*iqr
+        start_idx = 0
+        for x in temp_cov_max:
+            if x > t1:
+                start_idx=temp_cov_max.index(x)
+                break
+        end_idx = -1
+        for x in temp_cov_max[::-1]:
+            if x > t1:
+                end_idx=len(temp_cov_max) - temp_cov_max[::-1].index(x) 
+                break
+    else:
+        return ["",0,0,0,0]
+    #print(temp_cov_max[start_idx-1],temp_cov_max[end_idx-1])
+    #print(temp_cov_max[start_idx],temp_cov_max[end_idx])
+    #print(temp_cov_max[start_idx+1],temp_cov_max[end_idx+1])
+    temp_pos_max = temp_pos_max[start_idx:end_idx+1]
+    #print(start_idx,end_idx+1)
+    #print(temp_pos_max)
+    #start,end = temp_pos_max[0],temp_pos_max[-1]
+    temp_cov_max = temp_cov_max[start_idx:end_idx+1]
+
+    #上一个 50% 以下的排除
+    if not  temp_cov_max:
+        return ["",0,0,0,0]
+    s_idx,e_idx = get_break_point_idx(temp_cov_max,0.5)
+    temp_pos_max = temp_pos_max[s_idx:e_idx+1]
+    start,end = temp_pos_max[0],temp_pos_max[-1]
+    temp_cov_max = temp_cov_max[s_idx:e_idx+1]
+    region_len = (end-start)
+    region_mean_depth_max = float("{:.2f}".format(sum(temp_cov_max)/region_len))
+    target_region = [reference_name,start,end,region_mean_depth_max,region_len]
+    #return target_region,all_depth
+    return target_region
+
 #
 ##
 ###################用于bam  方法  END#################
