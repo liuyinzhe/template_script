@@ -598,6 +598,32 @@ def max_depth_region(bam,reference_name,chr_len):
     #return target_region,all_depth
     return target_region
 
+
+def get_taget_region_mean_depth(bam,reference_name,start,end):
+    '''
+    import pysam
+    计算目标区域内的平均深度
+    '''
+    #all_depth = []
+    temp_pos =[] # 存储平均深度最大所有坐标
+    temp_cov =[] # 存储平均深度最大所有碱基深度
+    samfile = pysam.AlignmentFile(bam, "rb" )
+    #pileupcolumn,直接到有比对的位置,第一个位置就是有覆盖深度的地方
+    #for pileupcolumn in samfile.pileup( reference_name, 0, chr_len,max_depth=8000,truncate=True,stepper="nofilter"):
+    for pileupcolumn in samfile.pileup( reference_name, start, end+1):
+        #reference_name = pileupcolumn.reference_name
+        base_coverage = pileupcolumn.nsegments
+        ref_pos = pileupcolumn.reference_pos
+        # 一个单碱基坐标，一个该位置的深度
+        #all_depth.append([ref_pos,base_coverage])
+        #print(ref_pos,base_coverage)
+        temp_pos.append(ref_pos)
+        temp_cov.append(base_coverage)
+    region_len = end +1 - start 
+    base_depth=sum(temp_cov)
+    region_mean_depth = float("{:.2f}".format(base_depth/region_len))
+    return region_mean_depth
+
 #
 ##
 ###################用于bam  方法  END#################
