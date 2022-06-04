@@ -601,6 +601,7 @@ def max_depth_region(bam,reference_name,chr_len):
 
 def get_taget_region_mean_depth(bam,reference_name,start,end):
     '''
+    coordinate: 0-base
     import pysam
     计算目标区域内的平均深度
     '''
