@@ -461,6 +461,33 @@ def cigar2tab(read):
         yield tmp_lst
     #return target_info_lst
 
+def parse_cigar4count(read):
+    '''
+    # minimap2 -eqx
+    # pbmm2
+
+    samfile = pysam.AlignmentFile(bam_file, "rb")
+    allreads=samfile.fetch(contig='chrX', start=1234567, stop=1234568)
+    for read in allreads:
+        reference_start = read.reference_start
+        query_alignment_start = read.query_alignment_start
+        query_alignment_end = read.query_alignment_end
+        query_length = read.query_length
+    '''
+    cigar_str = read.cigarstring
+    #print(cigarstring)
+    ins_len_list = list(map(int,re.findall('(\d+)I', cigar_str)))
+    #print(ins_len_list)
+    del_len_list = list(map(int,re.findall('(\d+)D', cigar_str)))
+    mis_len_list = list(map(int,re.findall('(\d+)X', cigar_str)))
+    mat_len_list = list(map(int,re.findall('(\d+)=', cigar_str)))
+    softclip_len_list = list(map(int,re.findall('(\d+)S', cigar_str)))
+    ins_count=len(ins_len_list)
+    del_count=len(del_len_list)
+    mis_count=len(mis_len_list)
+    mat_count=len(mat_len_list)
+    softclip_count=len(softclip_len_list)
+    return ins_count,del_count,mis_count,mat_count,softclip_count
 #
 ##
 ###################用于bam  方法  END#################
