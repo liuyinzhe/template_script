@@ -615,7 +615,11 @@ def get_taget_region_mean_depth(bam,reference_name,start,end):
         #reference_name = pileupcolumn.reference_name
         base_coverage = pileupcolumn.nsegments
         ref_pos = pileupcolumn.reference_pos
-        if ref_pos <start or ref_pos>end:
+        #if ref_pos <start or ref_pos>end:
+        #    continue
+        if ref_pos >end:
+            break
+        if ref_pos <start:
             continue
         # 一个单碱基坐标，一个该位置的深度
         #all_depth.append([ref_pos,base_coverage])
