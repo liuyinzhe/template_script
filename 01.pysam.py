@@ -611,10 +611,12 @@ def get_taget_region_mean_depth(bam,reference_name,start,end):
     samfile = pysam.AlignmentFile(bam, "rb" )
     #pileupcolumn,直接到有比对的位置,第一个位置就是有覆盖深度的地方
     #for pileupcolumn in samfile.pileup( reference_name, 0, chr_len,max_depth=8000,truncate=True,stepper="nofilter"):
-    for pileupcolumn in samfile.pileup( reference_name, start, end+1):
+    for pileupcolumn in samfile.pileup( reference_name, start,end+1):
         #reference_name = pileupcolumn.reference_name
         base_coverage = pileupcolumn.nsegments
         ref_pos = pileupcolumn.reference_pos
+        if ref_pos <start or ref_pos>end:
+            continue
         # 一个单碱基坐标，一个该位置的深度
         #all_depth.append([ref_pos,base_coverage])
         #print(ref_pos,base_coverage)
@@ -622,7 +624,9 @@ def get_taget_region_mean_depth(bam,reference_name,start,end):
         temp_cov.append(base_coverage)
     region_len = end +1 - start 
     base_depth=sum(temp_cov)
+    #print(region_len,base_depth)
     region_mean_depth = float("{:.2f}".format(base_depth/region_len))
+    #print(region_mean_depth)
     return region_mean_depth
 
 #
