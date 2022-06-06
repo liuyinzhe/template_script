@@ -627,6 +627,7 @@ def get_taget_region_mean_depth(bam,reference_name,start,end):
     #print(region_len,base_depth)
     region_mean_depth = float("{:.2f}".format(base_depth/region_len))
     #print(region_mean_depth)
+    samfile.close()
     return region_mean_depth
 
 #
