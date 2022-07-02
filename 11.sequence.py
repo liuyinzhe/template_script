@@ -117,3 +117,21 @@ def fa_get_seq(file_nm,id_lists,format_len=0):
                     input_str = re.sub('[\n\r]','',seq)
                     seq = format_str(input_str,format_len)
                 yield seq_id,seq.strip()
+
+def split_dna(dna, kmer_size):
+    '''
+    https://www.cnblogs.com/jessepeng/p/12882606.html
+    '''
+    kmers = []
+    for start in range(0,len(dna)-(kmer_size-1),1):
+        kmer = dna[start:start+kmer_size]
+        kmers.append(kmer)
+    return kmers
+
+def split_sw(input_list, win_size ,step):
+    '''
+    yield type list
+    '''
+    for start in range(0,len(input_list)-win_size +1,step):
+        win = input_list[start:start+win_size]
+        yield win
