@@ -732,6 +732,11 @@ def main():
     
     bam_file='check.reads.sorted.bam'
     samfile = pysam.AlignmentFile(bam_file, "rb")
+    # rb,wb
+    out_bam = 'check.reads.tag.sorted.bam'
+    result_bam = pysam.AlignmentFile(out_bam, "wb",template=samfile)
+    # template=samfile 指定bam header 来源
+    # https://pysam.readthedocs.io/en/latest/api.html?highlight=pysam.AlignmentFile#pysam.AlignmentFile
     allreads=samfile.fetch(contig='chrX', start=1234567, stop=1234567)
     all_lst=[]
     cigar_dic = {'M':0,'I':1,'D':2,'N':3,'S':4,'H':5,'P':6,'=':7,'X':8,'B':9}
@@ -747,6 +752,16 @@ def main():
                     read_name ,info_list= cigar_detect(read,cigar_idex,min_len)
                     if len(info_list)>0:
                         print([read_name]+info_list)
+                    result_bam.write(read)
+    
+    # set_tag
+    # https://pysam.readthedocs.io/en/latest/api.html?highlight=set_tag#pysam.AlignedSegment.set_tag
+    # type
+    # https://samtools.github.io/hts-specs/SAMtags.pdf
+    # multiple_iterators=True
+    # https://pysam.readthedocs.io/en/latest/api.html?highlight=multiple_iterators%3DTrue#pysam.AlignmentFile.fetch
+    # AlignmentFile.fetch does not show unmapped reads
+    # https://pysam.readthedocs.io/en/latest/faq.html?highlight=included%20in%20the%20iteration%20by%20adding%20the%20until_eof%3DTrue%20flag#alignmentfile-fetch-does-not-show-unmapped-reads
 
 if __name__ == "__main__":
     if sys.version[0] == "3":
