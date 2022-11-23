@@ -20,6 +20,18 @@ import subprocess
 import pysam
 
 
+def calc_quantile(numlist,method='nearest'):
+    '''
+    input : numlist 
+    method
+    ['linear', 'lower', 'higher', 'midpoint', 'nearest']
+    https://numpy.org/doc/stable/reference/generated/numpy.quantile.html
+    '''
+    lower_q = np.quantile(numlist,0.25,method)
+    median = np.quantile(numlist,0.5,method)
+    higher_q = np.quantile(numlist,0.75,method)
+    
+    return lower_q,median,higher_q
 
 
 
