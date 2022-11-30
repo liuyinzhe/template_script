@@ -55,6 +55,6 @@ port = 3306         ; 4、同一个section下也可以存在多个option，也�
 username = root
 password = 123456
 [python]            ; 2、同一个ini文件中可以存在多个section
-version = 3.7.8
+version = 0.1.9
 system_env = mac
 '''
