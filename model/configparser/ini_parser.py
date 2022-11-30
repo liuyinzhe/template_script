@@ -36,7 +36,8 @@ class ConfTool(ConfigParser):
     def __getattr__(self, item):
         _box = Box(self.to_dict())
         # https://www.jianshu.com/p/2bc2605f84fb
-        # getattr(self, '类的属性或者函数名', '没有属性或函数则返回这里的内容not found')
+        # getattr(object, name[, default])
+        # 类，函数或者属性变量，找不到函数或属性返回内容
         return getattr(_box, item)
 
 
