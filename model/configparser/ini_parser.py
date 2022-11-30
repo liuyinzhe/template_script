@@ -27,8 +27,8 @@ class ConfTool(ConfigParser):
     def to_dict(self):
         _dict = {}
         for section in self.sections():
-            # print(dict(conf.items("mysql_conf")))
-            _option_dict = dict(conf.items(section=section))
+            # print(dict(self.items("mysql_conf")))
+            _option_dict = dict(self.items(section=section))
             _dict.update({section: _option_dict})
         return _dict
 
