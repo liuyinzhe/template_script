@@ -48,3 +48,13 @@ if __name__ == '__main__':
     print(conf.to_dict())
     # 可以通过属性调用的形式，获取配置
     print(conf.mysql_conf.host)
+'''
+[mysql_conf]        ; 1、在ini配置文件中,[]中的值被称为section
+host = 127.0.0.1    ; 3、一个section下的键值对被称为option
+port = 3306         ; 4、同一个section下也可以存在多个option，也就是多个键值对的配置项
+username = root
+password = 123456
+[python]            ; 2、同一个ini文件中可以存在多个section
+version = 3.7.8
+system_env = mac
+'''
