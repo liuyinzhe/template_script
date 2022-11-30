@@ -4,7 +4,8 @@ import logging
 
 
 LOG_FORMAT = "%(asctime)s %(name)s %(levelname)s %(pathname)s %(message)s "#配置输出日志格式
-DATE_FORMAT = '%Y-%m-%d  %H:%M:%S' #配置输出时间的格式，注意月份和天数不要搞乱了
+#配置输出时间的格式，注意月份和天数不要搞乱了
+DATE_FORMAT = '%Y-%m-%d  %H:%M:%S %A ' #'%Y-%m-%d  %H:%M:%S' 
 
 
 # logging.basicConfig(level=logging.DEBUG,
@@ -23,11 +24,12 @@ logging.basicConfig(level=logging.DEBUG,
 
 
 
-logging.debug("msg1")    #默认不输出到屏幕(stdout)
-logging.info("msg2")     #默认不输出到屏幕(stdout)
-logging.warning("msg3")  #默认输出格式    #WARNING:root:msg3
-logging.error("msg4")    #默认输出格式    #ERROR:root:msg4
-logging.critical("msg5") #默认输出格式    #CRITICAL:root:msg5
+logging.debug("调试代码")    #默认不输出到屏幕(stdout)
+logging.info("######## Checking xxx ########")     #记录程序是否正常运行
+logging.warning("记录程序运行过程中的警告信息")  #默认输出格式    #WARNING:root:msg3
+
+logging.error("错误")    #默认输出格式    #ERROR:root:msg4
+logging.critical("危险") #默认输出格式    #CRITICAL:root:msg5
 
 
 #以下为一种应用logging 的情况，涉及 异常处理，其实很简单，可以理解为 自己怎么处理在
