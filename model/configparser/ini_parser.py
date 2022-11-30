@@ -35,6 +35,8 @@ class ConfTool(ConfigParser):
     # 使用python-box模块，方便链式调用
     def __getattr__(self, item):
         _box = Box(self.to_dict())
+        # https://www.jianshu.com/p/2bc2605f84fb
+        # getattr(self, '类的属性或者函数名', '没有属性或函数则返回这里的内容not found')
         return getattr(_box, item)
 
 
