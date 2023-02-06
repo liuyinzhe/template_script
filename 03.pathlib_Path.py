@@ -100,6 +100,9 @@ def Timestamp_local2utc(local_stamp):
  
  
 def convertSizeUnit(sz, source='B', target='auto', return_unit=False):
+    '''
+    文件大小指定单位互转，自动则转换为最大的适合单位
+    '''
     #target=='auto' 自动转换大小进位,大于1024 就进位；对于不能进位的返回原始大小和单位
     #return_unit 是否返回 单位
     source = source.upper()
@@ -137,6 +140,9 @@ def convertSizeUnit(sz, source='B', target='auto', return_unit=False):
  
  
 def getFileSize(file_path, target='KB'):
+    '''
+    获取文件大小，target指定文件大小单位
+    '''
     #from pathlib import Path
     #stat_result=Path(file_path).stat()
     #sz =stat_result.st_size
@@ -150,6 +156,9 @@ def getFileSize(file_path, target='KB'):
  
  
 def getdirsize(dir, target='B'):
+    '''
+    获取目录文件总大小，target指定文件大小单位
+    '''
     size = 0
     for root, dirs, files in os.walk(dir):
         size += sum([getFileSize(os.path.join(root, name), target=target) for name in files])
@@ -161,6 +170,7 @@ def getdirsize(dir, target='B'):
  
 def GetFolderCatalogPath(pwd):
     '''
+    获取目录下文件夹全路径，返回列表
     param: str  "pwd"
     return:list [ str ]
     '''
@@ -181,6 +191,7 @@ def GetFolderCatalogPath(pwd):
  
 def GetFolderCatalogName(pwd):
     '''
+    获取目录下文件夹名称，返回列表
     param: str  "pwd"
     return:list [ str ]
     '''
@@ -202,6 +213,7 @@ def GetFolderCatalogName(pwd):
  
 def GetAllFilePaths(pwd,wildcard='*'):
     '''
+    获取目录下文件全路径，通配符检索特定文件名，返回列表
     param: str  "pwd"
     return:dirname pathlab_obj
     return:list [ str ]
@@ -220,6 +232,7 @@ def GetAllFilePaths(pwd,wildcard='*'):
  
 def GetAllFileNames(pwd):
     '''
+    获取目录下所有文件名，返回列表
     param: str  "pwd"
     return:dirname pathlab_obj
     return:list [ str ]
