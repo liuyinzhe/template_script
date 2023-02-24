@@ -34,6 +34,11 @@ class ConfTool(ConfigParser):
 
     # 使用python-box模块，方便链式调用
     def __getattr__(self, item):
+        '''
+        __getattr__函数的作用： 如果属性查找（attribute lookup）在实例以及对应的类中（通过__dict__)失败， 那么会调用到类的__getattr__函数, 如果没有定义这个函数，那么抛出AttributeError异常。由此可见，__getattr__一定是作用于属性查找的最后一步，兜底。
+
+        '''
+        # Box 返回对象自身 self, 方便调用其属性/函数，所以叫做链式调用，如self.len().sum().value
         _box = Box(self.to_dict())
         # https://www.jianshu.com/p/2bc2605f84fb
         # getattr(object, name[, default])
