@@ -107,6 +107,6 @@ with gzip.open('input.gz',mode='rb') as fh:
 with gzip.open('unicode.gz',mode='wb') as out:
     out.write('unicode\n'.encode())#.encode('utf-8') ,字符串方法，默认编码成 utf-8
     out.write(b'unicode\n') # ASCII 字符 转二进制
-    out.write(bytes('unicode\n')) # 转化为 bytes 类型，对于非 ASCII 字符，print 输出的是它的字符编码值（十六进制形式）
+    out.write(bytes('unicode\n'.encode('utf-8'))) # 转化为 bytes 类型，对于非 ASCII 字符，print 输出的是它的字符编码值（十六进制形式）
     # bytes 类也有一个 decode() 方法，通过该方法可以将 bytes 对象转换为字符串
     # bytes_str.decode('utf-8')
