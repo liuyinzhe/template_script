@@ -98,11 +98,19 @@ def check_gzip_format(file_nm):
 
 
 with gzip.open('input.gz',mode='rb') as fh:
-    for line in fh:
+    for bytes_line in fh:
+        print(type(bytes_line)) #bytes
+        line = bytes_line.encode()
         print(line.decode('utf-8'))# source 是已知 字符串为utf-8 编码的情况; 解码为unicode
         #乱码，则可能是 中文编码 gb2312,gbk,utf-8-sig
         print(line)
 
+with gzip.open('input.gz',mode='rt') as fh:
+    for line in fh:
+        print(type(line))
+        print(line.decode('utf-8'))# source 是已知 字符串为utf-8 编码的情况; 解码为unicode
+        #乱码，则可能是 中文编码 gb2312,gbk,utf-8-sig
+        print(line)
 
 with gzip.open('unicode.gz',mode='wb') as out:
     out.write('unicode\n'.encode())#.encode('utf-8') ,字符串方法，默认编码成 utf-8
