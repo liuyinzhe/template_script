@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+# 设置默认编码输出的,python3 默认内部 unicode,输出 utf-8
+
+# unicode方便于跨平台
+# python3 内部存储字符串按照 unicode, 输出为utf-8
+# str.decode('ascii').encode('utf-8')
+# 
+
 import gzip
 import shutil
 
@@ -84,3 +92,21 @@ def check_gzip_format(file_nm):
         else:
             magic_flag = False
     return magic_flag
+
+
+
+
+
+with gzip.open('input.gz',mode='rb') as fh:
+    for line in fh:
+        print(line.decode('utf-8'))# source 是已知 字符串为utf-8 编码的情况; 解码为unicode
+        #乱码，则可能是 中文编码 gb2312,gbk,utf-8-sig
+        print(line)
+
+
+with gzip.open('unicode.gz',mode='wb') as out:
+    out.write('unicode\n'.encode())#.encode('utf-8') ,字符串方法，默认编码成 utf-8
+    out.write(b'unicode\n') # ASCII 字符 转二进制
+    out.write(bytes('unicode\n')) # 转化为 bytes 类型，对于非 ASCII 字符，print 输出的是它的字符编码值（十六进制形式）
+    # bytes 类也有一个 decode() 方法，通过该方法可以将 bytes 对象转换为字符串
+    # bytes_str.decode('utf-8')
