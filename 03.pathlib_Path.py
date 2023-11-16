@@ -253,5 +253,11 @@ def GetAllFileNames(pwd):
  
 ##################end   目录扫描  end######################
  
-
+def main():
+    script_path =Path(__file__)
+    script_dir = Path(script_path).parent
+    #print(script_dir)
+    current_dir = Path.cwd()
     
+if __name__ == '__main__':
+    main()
