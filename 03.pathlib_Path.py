@@ -7,6 +7,10 @@ import os
 # pathlib 除了官方文档，推荐这两个网址学习
 # https://www.cnblogs.com/poloyy/p/12435628.html
 # https://zhuanlan.zhihu.com/p/87940289
+# https://zhuanlan.zhihu.com/p/139783331
+# https://zhuanlan.zhihu.com/p/430823972
+# https://zhuanlan.zhihu.com/p/56909212
+
 
 a=Path(r'D:\xxx\pathlib_Path.py')
 print(a.stat().st_size)
