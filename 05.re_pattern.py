@@ -19,4 +19,24 @@ def sub_star(star_str):
     #result = str(star_str).replace(r'*', r'\S+?')
     return result
 
+def pretreatment_text(text):
+    '''
+    字符串变量中特殊字符进行反转义
+    '''
+    trans_map = {
+        "+":r"\+",
+        "(":r"\(",
+        ")":r"\)",
+        "[":r"\[",
+        "]":r"\]",
+        '\\':r"\\\\"
+    }
+    new_str = ''
+    for char in text:
+        try:
+            new_str += trans_map[char]
+        except KeyError:
+            new_str += char
+
+    return new_str
 ######################begin 正则  end##################
