@@ -29,7 +29,8 @@ def pretreatment_text(text):
         ")":r"\)",
         "[":r"\[",
         "]":r"\]",
-        '\\':r"\\\\"
+        "\\":r"\\\\",
+        "|":r"\|",
     }
     new_str = ''
     for char in text:
