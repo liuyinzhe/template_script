@@ -27,9 +27,9 @@ def calc_quantile(numlist,method='nearest'):
     ['linear', 'lower', 'higher', 'midpoint', 'nearest']
     https://numpy.org/doc/stable/reference/generated/numpy.quantile.html
     '''
-    lower_q = np.quantile(numlist,0.25,method)
-    median = np.quantile(numlist,0.5,method)
-    higher_q = np.quantile(numlist,0.75,method)
+    lower_q = np.quantile(numlist,0.25,method=method)
+    median = np.quantile(numlist,0.5,method=method)
+    higher_q = np.quantile(numlist,0.75,method=method)
     
     return lower_q,median,higher_q
 
