@@ -1,7 +1,10 @@
 from pathlib import Path
 import time
+import datetime
 import math
 import os
+import sys
+
 
 # 写在前面
 # pathlib 除了官方文档，推荐这几个网址学习
@@ -12,8 +15,8 @@ import os
 # https://zhuanlan.zhihu.com/p/56909212
 
 
-a=Path(r'D:\xxx\pathlib_Path.py')
-print(a.stat().st_size)
+# a=Path(r'D:\xxx\pathlib_Path.py')
+# print(a.stat().st_size)
 '''
 st_mode: inode 保护模式
 st_ino: inode 节点号。
@@ -27,6 +30,32 @@ st_mtime: 最后一次修改的时间。
 st_ctime: 由操作系统报告的"ctime"。在某些系统上（如Unix）是最新的元数据更改的时间，在其它系统上（如Windows）是创建时间（详细信息参见平台的文档）。
 '''
 
+#################start Judge the system platform start#################
+
+import sys
+ 
+if sys.platform.startswith("win"):
+    print("当前系统是Windows")
+elif sys.platform.startswith("linux"):
+    print("当前系统是Linux")
+elif sys.platform.startswith("darwin"):
+    print("当前系统是Mac OS")
+else:
+    print("当前系统是其他操作系统")
+
+#################end    Judge the system platform    end#################
+
+#################start Information Collection start#################
+import getpass
+import socket
+
+User_Name = getpass.getuser()
+host_Name = socket.gethostname()
+current_ip = socket.gethostbyname(host_Name)
+print(f'UserName: {User_Name}')
+print(f'hostName: {host_Name}')
+print(f'currentIp:{current_ip}')
+#################end  Information Collection  end#################
 
 
 #######################end  file  stat_time  start#######################
@@ -148,9 +177,9 @@ def getFileSize(file_path, target='KB'):
     获取文件大小，target指定文件大小单位
     '''
     #from pathlib import Path
-    #stat_result=Path(file_path).stat()
-    #sz =stat_result.st_size
-    sz = os.path.getsize(file_path)
+    stat_result=Path(file_path).stat()
+    sz =stat_result.st_size
+    #sz = os.path.getsize(file_path)
     if target == 'B':
         new_sz = sz
     else:
@@ -164,8 +193,18 @@ def getdirsize(dir, target='B'):
     获取目录文件总大小，target指定文件大小单位
     '''
     size = 0
-    for root, dirs, files in os.walk(dir):
-        size += sum([getFileSize(os.path.join(root, name), target=target) for name in files])
+    # for root, dirs, files in os.walk(dir):
+    #     # print("当前目录为：", root)
+    #     # print("当前目录下的子目录有：", dirs)
+    #     # print("当前目录下的文件有：", files)
+    #     size += sum([getFileSize(os.path.join(root, name), target=target) for name in files])
+
+    target_path=Path(dir)
+    for child in target_path.rglob("*"):
+        if not child.is_dir():
+            continue
+        size += getFileSize(child, target=target)
+
     return size
  
 ######################end       file size          end#####################
@@ -183,7 +222,9 @@ def GetFolderCatalogPath(pwd):
     #dirname = child.parent
     #dirname=target_path
     for child in target_path.iterdir():
-        if child.is_dir():
+        if child.is_symlink():
+            pass
+        elif child.is_dir():
             #对于空文件夹跳过
             if not os.listdir(str(child)):
                 print("empty directory: "+str(child))
@@ -204,7 +245,9 @@ def GetFolderCatalogName(pwd):
     #dirname = child.parent
     #dirname=target_path
     for child in target_path.iterdir():
-        if child.is_dir():
+        if child.is_symlink():
+            pass
+        elif child.is_dir():
             #对于空文件夹跳过
             if not os.listdir(str(child)):
                 print("empty directory: "+str(child))
@@ -227,7 +270,9 @@ def GetAllFilePaths(pwd,wildcard='*'):
     files_lst = []
     target_path=Path(pwd)
     for child in target_path.rglob(wildcard):
-        if child.is_dir():
+        if child.is_symlink():
+            pass
+        elif child.is_dir():
             pass
         elif child.is_file():
             files_lst.append(str(child))
@@ -247,7 +292,9 @@ def GetAllFileNames(pwd):
     #字符串路径 工厂化为 pathlib 对象，可使用pathlib 对象的方法(函数)/属性(私有变量)
     target_path = Path(pwd)
     for child in target_path.rglob('*'):
-        if child.is_dir():
+        if child.is_symlink():
+            pass
+        elif child.is_dir():
             pass
         elif child.is_file():
             #child完整路径,child.relative_to(pwd) 相对于pwd的相对路径，其实就是文件名;可以通过child.name获得
@@ -263,5 +310,15 @@ def main():
     #print(script_dir)
     current_dir = Path.cwd()
     
-if __name__ == '__main__':
+if __name__ == "__main__":
+    if sys.version[0] == "3":
+        start_time = time.perf_counter()
+    else:
+        start_time = time.clock()
     main()
+    if sys.version[0] == "3":
+        end_time = time.perf_counter()
+    else:
+        end_time = time.clock()
+    print("%s %s %s\n" % ("main()", "use", str(
+        datetime.timedelta(seconds=end_time - start_time))))
