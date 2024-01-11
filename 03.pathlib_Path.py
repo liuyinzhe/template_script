@@ -304,7 +304,18 @@ def GetAllFileNames(pwd):
             files_lst.append(child.relative_to(pwd))
             #print(child.relative_to(pwd))
     return files_lst
- 
+
+def iterate_path(root_path, max_depth=1):
+    '''
+    指定深度，获得目录下所有path;递进函数
+    '''
+    # iterdir 只扫描当前1级目录
+    for path in root_path.iterdir():
+        max_depth -= 1
+        if path.is_dir() and max_depth > 0:
+            yield from iterate_path(path, max_depth=max_depth)
+        yield path
+     
 ##################end   目录扫描  end######################
  
 def main():
