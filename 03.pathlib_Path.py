@@ -32,16 +32,25 @@ st_ctime: 由操作系统报告的"ctime"。在某些系统上（如Unix）是�
 
 #################start Judge the system platform start#################
 
-import sys
- 
-if sys.platform.startswith("win"):
-    print("当前系统是Windows")
-elif sys.platform.startswith("linux"):
-    print("当前系统是Linux")
-elif sys.platform.startswith("darwin"):
-    print("当前系统是Mac OS")
-else:
-    print("当前系统是其他操作系统")
+def obtain_platform():
+    '''
+    判别当前系统
+    '''
+    #import sys
+    platform_flag = 'win'
+    if sys.platform.startswith("win"):
+        platform_flag = 'win'
+        print("当前系统是Windows")
+    elif sys.platform.startswith("linux"):
+        platform_flag = 'linux'
+        print("当前系统是Linux")
+    elif sys.platform.startswith("darwin"):
+        platform_flag = 'darwin'
+        print("当前系统是Mac OS")
+    else:
+        print("当前系统是其他操作系统")
+        platform_flag = 'other'
+    return platform_flag
 
 #################end    Judge the system platform    end#################
 
