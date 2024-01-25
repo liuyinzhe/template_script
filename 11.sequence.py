@@ -1,6 +1,6 @@
 import gzip
 import re
-
+from pyfaidx import Fasta
 
 def check_gzip_format(file_nm):
     '''
@@ -135,3 +135,41 @@ def split_sw(input_list, win_size ,step):
     for start in range(0,len(input_list)-win_size +1,step):
         win = input_list[start:start+win_size]
         yield win
+
+
+
+def reverse_complement(seq):
+    '''get reverse complement  seq'''
+    rule = {'A': 'T', 'T': 'A', 'G': 'C', 'C': 'G', 'N': 'N',']':'[', '[':']'}
+    return ''.join([rule[each] for each in seq.upper()][::-1])
+
+
+def get_flank_seq(genome_path,chrom,start,end,flank_size):
+    
+    # 1-base to 0-base
+    start -= 1
+    end -= 1
+
+    if end < start:
+        raise Exception("warnning:end < start:"+str(end)+"<"+str(start))
+    
+    chrom = chrom.lower()
+    # read genome file
+    genome = Fasta(genome_path)
+    if start == end:
+        # SNP
+        SNP_base = genome[chrom][start:end+1].seq
+        complete_seq = genome[chrom][start-flank_size:end+1+flank_size].seq
+        mark_seq = genome[chrom][start-flank_size:start].seq +"["+SNP_base+"]"+genome[chrom][end+1:end+1+flank_size].seq
+    elif abs(end - start) == 1: 
+        # INS
+        INS_base = ""
+        complete_seq = genome[chrom][start-flank_size+1:end+1+flank_size].seq
+        mark_seq = genome[chrom][start-flank_size+1:start+1].seq +"["+INS_base+"]"+genome[chrom][end:end+flank_size].seq
+    else:
+        # DEL or delins
+        DELINS_base = genome[chrom][start:end+1].seq
+        complete_seq = genome[chrom][start-flank_size+1:end+1+flank_size].seq
+        mark_seq = genome[chrom][start-flank_size:start].seq +"["+DELINS_base+"]"+genome[chrom][end+1:end+1+flank_size].seq
+    rc_mark_seq = reverse_complement(mark_seq)
+    return complete_seq,mark_seq,rc_mark_seq
