@@ -321,7 +321,7 @@ def iterate_path(root_path, max_depth=1):
     # iterdir 只扫描当前1级目录
     for child_path in root_path.iterdir():
         path_depth = len(child_path.relative_to(root_path).parts)
-        if child_path.is_dir() and path_depth < max_depth :
+        if child_path.is_dir() and not child_path.is_symlink() and path_depth < max_depth :
             child_max_depth = max_depth - 1
             yield from iterate_path(child_path, max_depth=child_max_depth)
         
