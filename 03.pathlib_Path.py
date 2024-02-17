@@ -205,11 +205,14 @@ def getFileSize(file_path, target='KB'):
     stat_result=Path(file_path).stat()
     sz =stat_result.st_size
     #sz = os.path.getsize(file_path)
+
+    # initialization
+    result_sz = 0 
     if target == 'B':
-        new_sz = sz
+        result_sz = sz
     else:
         new_sz, size_unit = convertSizeUnit(sz, source='B', target=target, return_unit=True)
-        if size_unit == 'B':
+        if size_unit == 'B': # 未能转成功
             result_sz = new_sz
         else:
             result_sz = float('{:.2f}'.format(new_sz)) #
