@@ -127,6 +127,22 @@ def Timestamp_local2utc(local_stamp):
     else:
         utc_stamp = local_stamp + offset
         return utc_stamp
+
+def TimeStamp2TimeStr(TimeStamp,FormatStr="%Y-%m-%d %H:%M:%S",TimeOffset_h=8):
+    '''
+    将UTC时间转换为北京时间(UTC时间8小时偏移)
+    Dependence:import datetime
+    '''
+
+    utc_time = datetime.datetime.utcfromtimestamp(TimeStamp)  # 将时间戳转换为UTC时间
+    # 将UTC时间转换为北京时间 TimeOffset_h = 8
+    OffsetTimeZone = datetime.timezone(datetime.timedelta(hours=TimeOffset_h))
+    NewTimeStamp = utc_time.astimezone(OffsetTimeZone)
+    #print(f"从时间戳{TimeStamp}转换得到的时间为：{NewTimeStamp}")
+    # 从时间戳1687565839转换得到的时间为：2023-06-24 08:17:19+08:00
+    # https://www.zhihu.com/question/608209144/answer/3087188010
+    FormattedTime = NewTimeStamp.strftime(FormatStr)
+    return FormattedTime
 ###
 ####
 #####
