@@ -209,10 +209,10 @@ def getFileSize(file_path, target='KB'):
         new_sz = sz
     else:
         new_sz, size_unit = convertSizeUnit(sz, source='B', target=target, return_unit=True)
-    if size_unit == 'B':
-        result_sz = new_sz
-    else:
-        result_sz = float('{:.2f}'.format(new_sz)) #
+        if size_unit == 'B':
+            result_sz = new_sz
+        else:
+            result_sz = float('{:.2f}'.format(new_sz)) #
     return result_sz
  
  
