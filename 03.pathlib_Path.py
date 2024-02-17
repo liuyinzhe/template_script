@@ -157,7 +157,7 @@ def TimeStamp2TimeStr(TimeStamp,FormatStr="%Y-%m-%d %H:%M:%S",TimeOffset_h=8):
 #https: // zhidao.baidu.com/question/750931419356209332.html
  
  
-def convertSizeUnit(sz, source='B', target='auto', return_unit=False):
+def convertSizeUnit(sz, source='B', target='AUTO', return_unit=False):
     '''
     文件大小指定单位互转，自动则转换为最大的适合单位
     '''
@@ -172,6 +172,11 @@ def convertSizeUnit(sz, source='B', target='auto', return_unit=False):
     source_index = unit_dic[source]
     target_index = unit_dic[target]
     index = math.log(sz, 1024)  # 计算数字中有几个1024 相乘过；或者说可以被几个1024 除掉
+
+    # initialization
+    target_unit = target
+    result_sz = 0
+
     if target == 'AUTO':
         if index < 1:  # source 比 target 还大，不能进位，自动就返回原始的
             return sz, source
@@ -184,12 +189,9 @@ def convertSizeUnit(sz, source='B', target='auto', return_unit=False):
         if index < 1:  # source 的单位比 target 还大
             cmp_level = source_index-target_index  # 差距
             result_sz = sz*1024**cmp_level  # 退位，乘以1024
-            target_unit = target
- 
         else:  # source 的单位比 target 小
             cmp_level = target_index - source_index  # 差距
             result_sz = sz/1024**cmp_level  # 进位 ，除以1024
-            target_unit = target
     if return_unit:
         return result_sz, target_unit
     else:
