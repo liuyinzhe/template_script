@@ -345,8 +345,8 @@ def iterate_path(root_path, max_depth=1):
         if child_path.is_dir() and not child_path.is_symlink() and path_depth < max_depth :
             child_max_depth = max_depth - 1
             yield from iterate_path(child_path, max_depth=child_max_depth)
-        
-        yield child_path
+        elif child_path.is_file()  and not child_path.is_symlink():
+            yield child_path
      
 ##################end   目录扫描  end######################
  
