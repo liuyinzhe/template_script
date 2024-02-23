@@ -13,6 +13,7 @@ import sys
 # https://zhuanlan.zhihu.com/p/139783331
 # https://zhuanlan.zhihu.com/p/430823972
 # https://zhuanlan.zhihu.com/p/56909212
+# https://zhuanlan.zhihu.com/p/475661402
 
 
 # a=Path(r'D:\xxx\pathlib_Path.py')
