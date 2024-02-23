@@ -348,7 +348,34 @@ def iterate_path(root_path, max_depth=1):
             yield from iterate_path(child_path, max_depth=child_max_depth)
         elif child_path.is_file()  and not child_path.is_symlink():
             yield child_path
-     
+
+def iterate_path(root_path,whitelist,max_depth=1):
+    '''
+    指定深度，获得目录下所有path; 添加白名单过滤
+    whitelist  path_obj
+    '''
+    # iterdir 只扫描当前1级目录
+    for child_path in root_path.iterdir():
+        path_depth = len(child_path.relative_to(root_path).parts)
+        if child_path.is_dir() and not child_path.is_symlink() and path_depth < max_depth :
+            child_max_depth = max_depth - 1
+            # 过滤白名单的路径
+            if len(whitelist) > 0:
+                if child_path in whitelist:
+                    continue
+                # set() 有交集形同内容，则认为有重复，去掉
+                elif len(list(whitelist.intersection(child_path.parents)))>0:
+                    continue
+            yield from iterate_path(child_path,whitelist,max_depth=child_max_depth)
+        elif child_path.is_file()  and not child_path.is_symlink():
+            # 过滤白名单的路径
+            if len(whitelist) > 0:
+                if child_path.parent in whitelist:
+                    continue
+                # set() 有交集形同内容，则认为有重复，去掉
+                elif len(list(whitelist.intersection(child_path.parents)))>0:
+                    continue
+            yield child_path
 ##################end   目录扫描  end######################
  
 def main():
