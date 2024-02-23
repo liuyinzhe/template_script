@@ -172,7 +172,10 @@ def convertSizeUnit(sz, source='B', target='AUTO', return_unit=False):
                 'GB': 3, 'TB': 4, 'PB': 5, 'AUTO': -1}
     source_index = unit_dic[source]
     target_index = unit_dic[target]
-    index = math.log(sz, 1024)  # 计算数字中有几个1024 相乘过；或者说可以被几个1024 除掉
+    if sz == 0:
+        index = 0
+    else:
+        index = math.log(sz, 1024)  # 计算数字中有几个1024 相乘过；或者说可以被几个1024 除掉
 
     # initialization
     target_unit = target
