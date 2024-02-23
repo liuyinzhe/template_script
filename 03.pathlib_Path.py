@@ -352,7 +352,7 @@ def iterate_path(root_path, max_depth=1):
 def iterate_path(root_path,whitelist,max_depth=1):
     '''
     指定深度，获得目录下所有path; 添加白名单过滤
-    whitelist  path_obj
+    whitelist  set(pathlib_obj)
     '''
     # iterdir 只扫描当前1级目录
     for child_path in root_path.iterdir():
