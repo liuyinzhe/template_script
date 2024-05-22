@@ -7,8 +7,11 @@ LOG_FORMAT = "%(asctime)s %(name)s %(levelname)s %(pathname)s %(message)s "#配�
 #配置输出时间的格式，注意月份和天数不要搞乱了
 DATE_FORMAT = '%Y-%m-%d  %H:%M:%S %A ' #'%Y-%m-%d  %H:%M:%S' 
 
-
-# logging.basicConfig(level=logging.DEBUG,
+'''
+# 默认生成的 root logger 的 level 是 logging.WARNING，低于该级别的就不输出了。
+级别排序：CRITICAL > ERROR > WARNING > INFO > DEBUG。（如果需要显示所有级别的内容，可将 level=logging.NOTSET）
+'''
+# logging.basicConfig(level=logging.DEBUG, 
 #                     format=LOG_FORMAT,
 #                     datefmt = DATE_FORMAT ,
 #                     filename=r"g:\script\model\logging\logging.log", #有了filename参数就不会直接输出显示到控制台，而是直接写入文件
@@ -53,6 +56,8 @@ except IOError as e:#打不开，文件不存在之类的错误 属于 IOError;
 #logging 的用法
 #https://www.cnblogs.com/Nicholas0707/p/9021672.html
 
+# Python logging 模块之 logging.basicConfig 用法和参数详解
+#https://blog.csdn.net/colinlee19860724/article/details/90965100
 
 #异常处理的输出
 #https://www.runoob.com/python3/python3-errors-execptions.html
