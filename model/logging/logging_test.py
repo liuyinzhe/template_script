@@ -11,7 +11,7 @@ DATE_FORMAT = '%Y-%m-%d  %H:%M:%S %A ' #'%Y-%m-%d  %H:%M:%S'
 # logging.basicConfig(level=logging.DEBUG,
 #                     format=LOG_FORMAT,
 #                     datefmt = DATE_FORMAT ,
-#                     filename=r"g:\script\model\logging\logging.log" #有了filename参数就不会直接输出显示到控制台，而是直接写入文件
+#                     filename=r"g:\script\model\logging\logging.log", #有了filename参数就不会直接输出显示到控制台，而是直接写入文件
 #                     filemode='w'
 #                     )
 
