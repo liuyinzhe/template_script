@@ -65,7 +65,6 @@ def run(playwright: Playwright) -> None:
     download = download_info.value
     download.save_as(out_file_path)
     time.sleep(1.3)
-    time_int = 1
     for i in range(1,time_int+1):
         # 翻页
         time.sleep(1.1)
