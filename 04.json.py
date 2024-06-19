@@ -51,8 +51,8 @@ def dic2path(input_dic,pre="/a/b/c/\\S+?/\\S+?"):
  
 
 #################begin 序列化 begin#####################
-def save_json(json_dic,file_name):
+def save_json(json_dic,file_path):
     json_str = json.dumps(json_dic, sort_keys=True, indent=4, separators=(',', ':'))
-    with open(file_name,mode='wt',encoding='utf-8') as f:
+    with open(file_path,mode='wt',encoding='utf-8') as f:
         f.write(json_str)
 ################end  序列化  end########################
