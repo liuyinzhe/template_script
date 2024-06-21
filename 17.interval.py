@@ -31,5 +31,5 @@ def merge_intervals(regions):
             merged[-1][-1] = max(merged[-1][-1], interval[-1])
     return merged
 
-def is_overlap(a, b):
-    return max(a[0], b[0]) <= min(a[1], b[1])
+def is_overlap(region_a, region_b):
+    return max(region_a[0], region_b[0]) <= min(region_a[1], region_b[1])
