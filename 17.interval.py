@@ -32,4 +32,9 @@ def merge_intervals(regions):
     return merged
 
 def is_overlap(region_a, region_b):
+    """
+    :param region_a: List[int,int]
+    :param region_b: List[int,int]
+    :return: Bool
+    """
     return max(region_a[0], region_b[0]) <= min(region_a[1], region_b[1])
