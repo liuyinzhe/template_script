@@ -3,6 +3,19 @@ import time
 import datetime
 
 
+def get_current_time_format():
+    #获取当前时间
+    time_obj = datetime.now()
+    #格式化时间
+    time_format = '{}-{:0>2d}-{:0>2d} {:0>2d}:{:0>2d}:{:0>2d}'.format(time_obj.year,time_obj.month,time_obj.day,time_obj.hour,time_obj.minute,time_obj.second)
+    time_format = '{}-{:0>2d}-{:0>2d}'.format(time_obj.year,time_obj.month,time_obj.day)
+    '''
+    print(time_format)
+    2024-08-23 15:04:28
+    2024-08-23
+    '''
+    return time_format
+  
 def main():
   pass
 
