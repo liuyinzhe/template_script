@@ -209,6 +209,38 @@ def judge_softclip(read, clip_min_len=10):
     else:
         return False
 
+def get_supplementary_Alignment(read):
+    '''
+    #使用:
+    # 一般分析 带上 -M 参数
+    # 有些软件不会去处理supplemenary(split alignments),比如Picard's markDuplicates,所以可能需要用-M把supplemenary 转换为secondary。
+    # 对于插入检测分析,不要使用 -M 参数;可以获得更多的 supplemenary alignments信息 ,用于检测插入序列
+
+    # bwa mem parameter -M -Y
+    # -M:mark shorter split hits as secondary; 把supplemenary alignment(flag值2048) 变为no primary(flag值256)
+    # -Y:use soft clipping for supplementary alignments; 仅仅是 58H34M变为58S34M 表示, 依然是 supplementary alignments
+    # 参考:
+    # Secondary ,Supplementary alignment 和bwa mem的-M -Y参数
+    # https://www.cnblogs.com/timeisbiggestboss/p/8856888.html
+    # bwa -M 参数解读
+    # https://blog.csdn.net/tanzuozhev/article/details/79037340
+
+    只能找到标记的 supplementary_Alignment , 有些split_reads 没有判断那为 supplementary_Alignment
+    1. sa_chr：补充比对的参考序列名称（染色体名称）。
+    2. sa_pos：补充比对的起始位置。
+    3. sa_strand：补充比对的方向（正向或反向）。
+    4. sa_mapq：补充比对的映射质量。
+    5. sa_cigar：补充比对的CIGAR字符串，描述了比对中的匹配、插入、删除等操作。
+    6. sa_match：补充比对的匹配长度。
+    在之前的示例代码中，sa_tag.split(',')返回的是一个包含上述信息的列表。每个元素分别对应上述的一列。
+
+    SA:Z:seq2,361,+,62M46S,60,0; -> seq2,361,+,62M46S,60,0
+    '''
+    sa_tag = read.get_tag('SA')
+    sa_chr, sa_pos, sa_strand, sa_mapq, sa_cigar, sa_match = sa_tag.split(',')
+    #print(f"Read {read.query_name} has a supplementary alignment at {sa_chr}:{sa_pos} on strand {sa_strand}")
+    return sa_chr, sa_pos, sa_strand, sa_mapq, sa_cigar, sa_match
+
 def cigar_detect(read,cigar_idex,min_len=0):
     '''
     cigar_dic = {'M':0,'I':1,'D':2,'N':3,'S':4,'H':5,'P':6,'=':7,'X':8,'B':9}
