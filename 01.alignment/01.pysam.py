@@ -241,6 +241,43 @@ def get_supplementary_Alignment(read):
     #print(f"Read {read.query_name} has a supplementary alignment at {sa_chr}:{sa_pos} on strand {sa_strand}")
     return sa_chr, sa_pos, sa_strand, sa_mapq, sa_cigar, sa_match
 
+def Mismatch_counter(read):
+    '''
+    96C53
+    20^TGC4T77
+    17A2A20A6A28G72
+    https://lh3.github.io/2018/03/27/the-history-the-cigar-x-operator-and-the-md-tag
+    R: AAAAAAAAAAATTTTT--GTTTTT
+    Q: AAAAAAAAAAGTTTTTACATTTTT
+    since this would be "10A5^ACG5".
+
+    150
+    总结：数字表示匹配，碱基表示错配，^碱基表示del。
+    https://www.zxzyl.com/archives/1484/
+    但需要注意的MD不包含insertion，含有insertion的字符串表示更复杂，需要与CIGAR联合看。
+    '''
+    deletion_base_count = 0
+    insertion_base_count = 0
+    # 获取CIGAR字符串并分析插入和删除
+    cigar_tuples = read.cigartuples
+    for operation, length in cigar_tuples:
+        if operation == 1:  # 插入
+            insertion_base_count += length
+        elif operation == 2:  # 删除
+            deletion_base_count += length
+    mismatch_count = 0
+    # 获取MD标签
+    md_tag = read.get_tag("MD")
+    pattern = re.compile(r"[ATGC]")
+    if "^" in md_tag:
+        match_list = pattern.findall(md_tag)
+        mismatch_count = len(match_list) - deletion_base_count
+    else:
+        match_list = pattern.findall(md_tag)
+        mismatch_count = len(match_list)
+        
+    return mismatch_count
+
 def cigar_detect(read,cigar_idex,min_len=0):
     '''
     cigar_dic = {'M':0,'I':1,'D':2,'N':3,'S':4,'H':5,'P':6,'=':7,'X':8,'B':9}
