@@ -2,6 +2,9 @@ from lxml import etree
 from xml.etree import ElementTree as ET
 from xml.dom import minidom
 
+# 参考视频
+# https://www.bilibili.com/video/BV1Mg411m7pV
+
 # ET  去打开xml 文件
 tree = ET.parse("1571990288_f_v3.xml")
 
