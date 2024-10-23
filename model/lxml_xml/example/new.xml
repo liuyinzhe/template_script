@@ -1,0 +1,8 @@
+<data>
+    <country name="county_name" id="999">
+        <rank updated="yes" updata="2024-10-10">999</rank>
+    </country>
+    <country name="county_name2">
+        <rank>22</rank>
+    </country>
+</data>

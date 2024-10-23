@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<home>
+  <son name="儿1">
+    <grandson name="儿11"/>
+  </son>
+  <son name="儿2">
+    value
+    <grandson name="儿12"/>
+  </son>
+</home>
