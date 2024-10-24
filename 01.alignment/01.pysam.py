@@ -242,7 +242,7 @@ def get_supplementary_Alignment(read):
     except KeyError:
         return None
     sa_tag = read.get_tag('SA')
-    sa_chr, sa_pos, sa_strand, sa_cigar,sa_mapq, sa_match = sa_tag.split(',')
+    sa_chr, sa_pos, sa_strand, sa_cigar, sa_mapq, sa_match = sa_tag.split(',')
     #print(f"Read {read.query_name} has a supplementary alignment at {sa_chr}:{sa_pos} on strand {sa_strand}")
     return sa_chr, sa_pos, sa_strand, sa_cigar, sa_mapq, sa_match
 
