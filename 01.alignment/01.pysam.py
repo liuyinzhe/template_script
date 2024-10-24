@@ -238,13 +238,20 @@ def get_supplementary_Alignment(read):
     SA:Z:seq2,361,+,62M46S,60,0; -> seq2,361,+,62M46S,60,0
     '''
     try :
-        sa_tag = read.get_tag('SA')
+        sa_tag_str = read.get_tag('SA')
     except KeyError:
         return None
-    sa_tag = read.get_tag('SA')
-    sa_chr, sa_pos, sa_strand, sa_cigar, sa_mapq, sa_match = sa_tag.split(',')
+    '''
+    A_chrom,310,+,105S45M,60,0;
+    B_chrom,6971,-,103S47M,0,0;C_chrom,36224645,-,77S11M2D32M30S,0,2;
+    '''
+    sa_tag_lst = re.split(";",sa_tag_str)
+    all_tag_values = []
+    for sa_tag in sa_tag_lst:
+        sa_chr, sa_pos, sa_strand, sa_cigar, sa_mapq, sa_match = sa_tag.split(',')
+        all_tag_values.append([sa_chr,sa_pos,sa_strand,sa_cigar,sa_mapq,sa_match])
     #print(f"Read {read.query_name} has a supplementary alignment at {sa_chr}:{sa_pos} on strand {sa_strand}")
-    return sa_chr, sa_pos, sa_strand, sa_cigar, sa_mapq, sa_match
+    return all_tag_values
 
 def Mismatch_counter(read):
     '''
