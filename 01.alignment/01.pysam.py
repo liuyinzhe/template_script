@@ -248,8 +248,9 @@ def get_supplementary_Alignment(read):
     sa_tag_lst = re.split(";",sa_tag_str)
     all_tag_values = []
     for sa_tag in sa_tag_lst:
-        sa_chr, sa_pos, sa_strand, sa_cigar, sa_mapq, sa_match = sa_tag.split(',')
-        all_tag_values.append([sa_chr,sa_pos,sa_strand,sa_cigar,sa_mapq,sa_match])
+        if sa_tag.strip():
+            sa_chr, sa_pos, sa_strand, sa_cigar, sa_mapq, sa_match = sa_tag.split(',')
+            all_tag_values.append([sa_chr,sa_pos,sa_strand,sa_cigar,sa_mapq,sa_match])
     #print(f"Read {read.query_name} has a supplementary alignment at {sa_chr}:{sa_pos} on strand {sa_strand}")
     return all_tag_values
 
