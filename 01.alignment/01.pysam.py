@@ -225,21 +225,26 @@ def get_supplementary_Alignment(read):
     # bwa -M 参数解读
     # https://blog.csdn.net/tanzuozhev/article/details/79037340
 
+    SA:Z:(rname ,pos ,strand ,CIGAR ,mapQ ,NM ;)
     只能找到标记的 supplementary_Alignment , 有些split_reads 没有判断那为 supplementary_Alignment
-    1. sa_chr：补充比对的参考序列名称（染色体名称）。
-    2. sa_pos：补充比对的起始位置。
-    3. sa_strand：补充比对的方向（正向或反向）。
-    4. sa_mapq：补充比对的映射质量。
-    5. sa_cigar：补充比对的CIGAR字符串，描述了比对中的匹配、插入、删除等操作。
-    6. sa_match：补充比对的匹配长度。
+    1.rname: sa_chr：补充比对的参考序列名称（染色体名称）。
+    2.pos: sa_pos：补充比对的起始位置。
+    3.strand: sa_strand：补充比对的方向（正向或反向）。
+    4.CIGAR: sa_cigar：补充比对的CIGAR字符串，描述了比对中的匹配、插入、删除等操作。
+    5.mapQ: sa_mapq：补充比对的映射质量。
+    6.NM;: sa_match：补充比对的匹配长度。
     在之前的示例代码中，sa_tag.split(',')返回的是一个包含上述信息的列表。每个元素分别对应上述的一列。
 
     SA:Z:seq2,361,+,62M46S,60,0; -> seq2,361,+,62M46S,60,0
     '''
+    try :
+        sa_tag = read.get_tag('SA')
+    except KeyError:
+        return None
     sa_tag = read.get_tag('SA')
-    sa_chr, sa_pos, sa_strand, sa_mapq, sa_cigar, sa_match = sa_tag.split(',')
+    sa_chr, sa_pos, sa_strand, sa_cigar,sa_mapq, sa_match = sa_tag.split(',')
     #print(f"Read {read.query_name} has a supplementary alignment at {sa_chr}:{sa_pos} on strand {sa_strand}")
-    return sa_chr, sa_pos, sa_strand, sa_mapq, sa_cigar, sa_match
+    return sa_chr, sa_pos, sa_strand, sa_cigar, sa_mapq, sa_match
 
 def Mismatch_counter(read):
     '''
