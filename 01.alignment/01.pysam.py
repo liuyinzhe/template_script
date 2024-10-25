@@ -254,6 +254,20 @@ def get_supplementary_Alignment(read):
     #print(f"Read {read.query_name} has a supplementary alignment at {sa_chr}:{sa_pos} on strand {sa_strand}")
     return all_tag_values
 
+def split_cigarstr(A_cigar,B_cigar):
+    A_match_obj = re.search(r"(\d+)[SM](\d+)[MS]",A_cigar)
+    B_match_obj = re.search(r"(\d+)[SM](\d+)[MS]",B_cigar)
+    A_num1 = A_match_obj.group(1)
+    A_num2 = A_match_obj.group(2)
+    B_num1 = B_match_obj.group(1)
+    B_num2 = B_match_obj.group(2)
+    A_list = sorted([A_num1,A_num2])
+    B_list = sorted([B_num1,B_num2])
+    if A_list[0] == B_list[0] and A_list[1] == B_list[1]:
+        return True
+    else:
+        return False
+
 def Mismatch_counter(read):
     '''
     96C53
