@@ -152,6 +152,14 @@ if __name__ == '__main__':
     ex_names = []
     for  file in files_lst:
         wb_obj = load_workbook(file)
+        '''
+        # 修改sheetnames
+        new_sheetname = 'NewSheetName'
+        current_sheetname = book.sheetnames[0]  # 假设我们要修改第一个sheet的名称
+        sheet = wb_obj[current_sheetname]
+        # sheet = wb_obj['Sheet1'] 
+        sheet.title = new_sheetname
+        '''
         ex_names = wb.sheetnames
         #print(ex_names)
         if len(ex_names) == 0:
