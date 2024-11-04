@@ -1,6 +1,6 @@
 import sys
 import time
-import datetime 
+from datetime import datetime
  
 def convert_time2Timestamp(time_str, UTC_FORMAT="%Y-%m-%dT%H:%M:%SZ"):
     '''
