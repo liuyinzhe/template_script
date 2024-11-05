@@ -5,6 +5,9 @@ def get_other_intervals(all_regions,intervals):
     '''
     给于0-base 区间,从all_regions中移除intervals区间,获得剩余区间
     返回的列表区间，可用于直接截取字符串
+    all_regions = [0,83]
+    intervals -> match [[3, 51], [53, 81]]
+    [(0, 2), (51, 52), (81, 83)]
     '''
     # all_regions = (0,31)
     # intervals = [(2, 4), (7, 25)]
@@ -14,7 +17,7 @@ def get_other_intervals(all_regions,intervals):
     for num  in range(start_idx,end_idx+1):
         in_interval = False
         for interval in intervals:
-            if interval[0] <= num <= interval[1]:
+            if interval[0] < num < interval[1]:
                 in_interval = True
                 break
         if not in_interval:
