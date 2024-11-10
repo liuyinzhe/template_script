@@ -1,0 +1,19 @@
+# 在toml中#表示注释
+name = "TOML"
+info = """
+在TOML中，
+支持多行字符串
+"""
+pyVersion = 3.11
+date = 2022-12-26
+app_name = "Tic-Tac-Toe"
+
+# Players
+
+[[players]]
+username = "gah"
+name = {first = "Geir Arne", last = "Hjelle"}
+
+[[players]]
+username = "tompw"
+name = {first = "Tom", last = "Preston-Werner"}
