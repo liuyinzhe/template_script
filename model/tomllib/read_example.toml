@@ -1,0 +1,8 @@
+# 在toml中#表示注释
+name = "TOML"
+info = """
+在TOML中，
+支持多行字符串
+"""
+pyVersion = 3.11
+date = 2022-12-26
