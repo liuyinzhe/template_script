@@ -106,7 +106,8 @@ def main():
         arg_list.append((chrom,str(file)))
 
     # verison 3
-    with multiprocessing.Pool(10) as pool:
+    processes = 10
+    with multiprocessing.Pool(processes) as pool:
         # prime 返回值
         primes = [n + 1 for 
                   n, prime in enumerate(pool.map(func=convert2table,iterable=arg_list)) # 函数，可迭代每个参数的迭代
