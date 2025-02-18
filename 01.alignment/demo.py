@@ -264,7 +264,7 @@ def main():
     var_info = open('var_info.xls',mode='wt',encoding='utf-8')
     var_info.write("read_name\tchrom\tref_pos_start\tref_pos_end\tgene\tg_start\tg_end\tread_pos_start\tread_pos_end\tquery_length\tvar_len\tvar_type\tstand\tread_pair\n")
     bam_file='RS23IMYJH16_D5_n.sorted.bam'
-    samfile = pysam.AlignmentFile(bam_file, "rb")
+    samfile = pysam.AlignmentFile(bam_file, "rb",threads=2)
     allreads=samfile.fetch(contig='D5', start=968, stop=2480)
     read_dic={} # read_name: target_seq #
     cigar_dic={}
