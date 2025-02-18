@@ -574,7 +574,7 @@ def parse_cigar4count(read):
     # minimap2 -eqx
     # pbmm2
 
-    samfile = pysam.AlignmentFile(bam_file, "rb")
+    samfile = pysam.AlignmentFile(bam_file, "rb", threads=2)
     allreads=samfile.fetch(contig='chrX', start=1234567, stop=1234568)
     for read in allreads:
         reference_start = read.reference_start
@@ -615,7 +615,7 @@ def max_depth_region(bam,reference_name,chr_len):
     region_mean_depth_max = 0
     temp_pos_max = []
     temp_cov_max = []
-    samfile = pysam.AlignmentFile(bam, "rb" )
+    samfile = pysam.AlignmentFile(bam, "rb" , threads=2)
     #pileupcolumn,直接到有比对的位置,第一个位置就是有覆盖深度的地方
     #for pileupcolumn in samfile.pileup( reference_name, 0, chr_len,max_depth=8000,truncate=True,stepper="nofilter"):
     for pileupcolumn in samfile.pileup( reference_name, 0, chr_len):
@@ -716,7 +716,7 @@ def get_taget_region_mean_depth(bam,reference_name,start,end):
     #all_depth = []
     temp_pos =[] # 存储平均深度最大所有坐标
     temp_cov =[] # 存储平均深度最大所有碱基深度
-    samfile = pysam.AlignmentFile(bam, "rb" )
+    samfile = pysam.AlignmentFile(bam, "rb", threads=2)
     #pileupcolumn,直接到有比对的位置,第一个位置就是有覆盖深度的地方
     #for pileupcolumn in samfile.pileup( reference_name, 0, chr_len,max_depth=8000,truncate=True,stepper="nofilter"):
     for pileupcolumn in samfile.pileup( reference_name, start,end+1):
@@ -839,7 +839,7 @@ def get_args():
 def main():
     
     bam_file='check.reads.sorted.bam'
-    samfile = pysam.AlignmentFile(bam_file, "rb")
+    samfile = pysam.AlignmentFile(bam_file, "rb", threads=2)
     # rb,wb
     out_bam = 'check.reads.tag.sorted.bam'
     result_bam = pysam.AlignmentFile(out_bam, "wb",template=samfile)
