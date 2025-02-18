@@ -10,7 +10,7 @@ with open('input_pos.tsv',mode='rt',encoding='utf-8') as fh:
         position_dic[position]=[ref_chrom, int(position), ref_base, alt_base]
 
 result_lst = [] # chrom position ref_base alt_base percent depth
-samfile = pysam.AlignmentFile("sample.sorted2.bam", "rb")
+samfile = pysam.AlignmentFile("sample.sorted2.bam", "rb", threads=2)
 # 保证pileupcolumn.nsegments 与reads 统计深度一致
 # pysam pileup function seems to give wrong pileup number
 #https://github.com/pysam-developers/pysam/issues/988
