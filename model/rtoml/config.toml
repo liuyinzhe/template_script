@@ -1,0 +1,8 @@
+[project]
+name = "rtoml Demo"
+version = "1.0.0"
+authors = ["Alice <alice@example.com>", "Bob <bob@example.com>"]
+
+[database]
+url = "postgresql://user:pass@localhost/db"
+timeout = 30
