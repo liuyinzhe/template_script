@@ -70,7 +70,12 @@ def get_current_time_format():
   
 def main():
   pass
-
+  from dateutil import parser
+   
+  date_string = "2024/03/04" #"2024-03-04"
+  timestamp = parser.parse(date_string)
+   
+  print(timestamp)
 
 if __name__ == "__main__":
     if sys.version[0] == "3":
