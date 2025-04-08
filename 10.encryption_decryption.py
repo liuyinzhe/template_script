@@ -1,5 +1,6 @@
 import  random
 from hashlib import md5
+import hashlib
 
 def random_string(length):
     '''
@@ -51,3 +52,44 @@ print ('[salt]\n', salt)
 print ('[md5_32]\n', md5)
 # 16位 md5
 print ('[md5_16]\n', md5[8:-8])
+
+#############################   blake2b
+def str2blake2b(sequence_str,digest_size=8,secret_key="primer",salt_str="design",person_str="person"):
+    #import hashlib
+    data=sequence_str.encode()
+    #data = "sequence_str".encode()
+    # 配置参数
+    hash_obj = hashlib.blake2b(
+        data,
+        digest_size=digest_size,           # 输出 1~64 字节
+        key=secret_key.encode(),#"secret_key",        # 密钥(可选) <64字节
+        salt=salt_str.encode(),#"random_salt",      # 盐值(可选) <16字节
+        person=person_str.encode(),#"app_context"     # 个性化字符串(可选) <16字节
+    )
+    custom_hash = hash_obj.hexdigest()
+    return custom_hash
+
+### str2blake2b
+data = "hello world".encode()
+
+# 配置参数
+hash_obj = hashlib.blake2b(
+    data,
+    digest_size=8,           # 输出 1~64 字节
+    # key=b"secret_key",        # 密钥（可选）
+    # salt=b"random_salt",      # 盐值（可选）
+    # person=b"app_context"     # 个性化字符串（可选）
+)
+custom_hash = hash_obj.hexdigest()
+print("Custom BLAKE2b:", custom_hash)
+
+### file2blake2b
+def hash_file(file_path):
+    blake2 = hashlib.blake2b()
+    with open(file_path, "rb") as f:
+        while chunk := f.read(8192):  # 分块读取
+            blake2.update(chunk)
+    return blake2.hexdigest()
+
+file_hash = hash_file("str_blake2b.py")
+print("File hash:", file_hash)
