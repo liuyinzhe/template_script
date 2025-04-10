@@ -101,6 +101,57 @@ def dicMeg(dic1,dic2):
 ###################用于bam  方法  BEGIN#################
 ##
 #
+
+def convert_cigar(cigar_string,min_len=10):
+    '''
+    简化cigar序列,增加M片段的连续性
+
+    #3473S378M113D7M2I2M2D734M9160S
+    #cigar_string="3473S378M113D7M2I2M2D734M9160S"
+    cigar_string="3473S378M113D7M2I2M2D734M"
+    cigar_string="3473H378M113D7M2I2M2D734M9160S"
+    cigar_string="9S250M1D1245M9S"
+    print(cigar_string)
+    new_str = convert_cigar(cigar_string,min_len=10)
+    print(new_str)
+    '''
+    all_lst = re.findall("((\d+)([MIDSHX=]))",cigar_string)
+    print(all_lst)
+    match_len = len(all_lst)
+    new_str = None
+    match_value = 0
+    for idx in range(match_len):
+        item,value,v_type = all_lst[idx]
+        #print(item)
+        #('636M', '636', 'M')
+        # 
+        if new_str == None and v_type not in ["M","="]:
+            new_str = item
+            continue
+        elif new_str == None and v_type in ["M","="]:
+            new_str = ""
+            match_value = int(value)
+            continue
+        if v_type in ["M","="]:
+            match_value += int(value)
+            #print("match_value",match_value)
+            #print(match_value)
+        elif int(value) < min_len and v_type not in ["M","="] and  idx < match_len -1 : # D 当作M
+            match_value += int(value)
+        elif int(value) < min_len and v_type == "S": # S 提前终止
+            new_str += str(match_value)+"M"
+            new_str += item
+        elif int(value) < min_len and v_type == "I": # I 提跳过
+            continue
+        elif int(value) > min_len and v_type not in ["M","="] : #SDI,大于的保留
+            new_str+=str(match_value)+"M"
+            match_value = 0
+            new_str+=item
+    if all_lst[-1][-1] in ["M","="]:
+        new_str+=str(match_value)+"M"
+        match_value=0
+    return new_str
+    
 #以下4个函数 在这个脚本里只用了judge_softclip
 def change_reads_pos(length, start, end):
     '''
