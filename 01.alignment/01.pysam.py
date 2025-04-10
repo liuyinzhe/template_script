@@ -116,7 +116,7 @@ def convert_cigar(cigar_string,min_len=10):
     print(new_str)
     '''
     all_lst = re.findall("((\d+)([MIDSHX=]))",cigar_string)
-    print(all_lst)
+    #print(all_lst)
     match_len = len(all_lst)
     new_str = None
     match_value = 0
