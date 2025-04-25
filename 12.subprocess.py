@@ -42,7 +42,7 @@ def runshell(shell_script,env=None):
     subprocess.STDOUT 特殊值,可传递给 stderr 参数,表示 stdout 和 stderr 合并输出
     subprocess.PIPE 管道,可传递给 stdout、stdin 和 stderr 参数。
     '''
-    command = "bash "+ shell_script
+    command = "bash "+ str(shell_script)
     return_obj =subprocess.run(command,
                             shell=True,
                             stdout=subprocess.PIPE,
