@@ -55,7 +55,7 @@ def save_json(json_dic,file_path):
     #sort_keys	True    按键名字母排序(False)
     #indent    4	空格缩进数量(None)
     #separators	(',', ':')    移除多余的分隔符空格，使JSON字符串更加紧凑(', ', ': ')
-    #ensure_ascii	True    处理非ASCII字符为Unicode序列
+    #ensure_ascii	False    处理非ASCII字符为Unicode序列(True)
     json_str = json.dumps(json_dic, sort_keys=True, indent=4, separators=(',', ':'), ensure_ascii=False)
     with open(file_path,mode='wt',encoding='utf-8') as f:
         f.write(json_str)
