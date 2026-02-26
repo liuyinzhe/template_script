@@ -1,0 +1,830 @@
+<!DOCTYPE html><html><head>
+      <title>report</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <style>
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}
+
+/* highlight */
+pre[data-line] {
+  position: relative;
+  padding: 1em 0 1em 3em;
+}
+pre[data-line] .line-highlight-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  display: block;
+  width: 100%;
+}
+
+pre[data-line] .line-highlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: inherit 0;
+  margin-top: 1em;
+  background: hsla(24, 20%, 50%,.08);
+  background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
+  pointer-events: none;
+  line-height: inherit;
+  white-space: pre;
+}
+
+pre[data-line] .line-highlight:before, 
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-start);
+  position: absolute;
+  top: .4em;
+  left: .6em;
+  min-width: 1em;
+  padding: 0 .5em;
+  background-color: hsla(24, 20%, 50%,.4);
+  color: hsl(24, 20%, 95%);
+  font: bold 65%/1.5 sans-serif;
+  text-align: center;
+  vertical-align: .3em;
+  border-radius: 999px;
+  text-shadow: none;
+  box-shadow: 0 1px white;
+}
+
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-end);
+  top: auto;
+  bottom: .4em;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview  ">
+      <p><img src="src\images\banner-3.jpg"></p>
+<center><font face="黑体;" size="12">转录组测序与分析报告</font></center>
+<p><br><br></p>
+<p align="left">客户单位：<b>{{institution}}</b><br>项目编号：<i>{{project_id}}</i></p>
+<br><br>
+<ul>
+<li><a href="#1概述">1. 概述</a></li>
+<li><a href="#2实验流程">2.实验流程</a></li>
+<li><a href="#3信息分析">3.信息分析</a>
+<ul>
+<li><a href="#31数据质控">3.1数据质控</a>
+<ul>
+<li><a href="#311-测序数据格式">3.1.1 测序数据格式</a></li>
+<li><a href="#312-数据质量控制">3.1.2 数据质量控制</a></li>
+</ul>
+</li>
+<li><a href="#32-比对参考基因组序列与定量">3.2 比对参考基因组序列与定量</a>
+<ul>
+<li><a href="#321-序列比对">3.2.1 序列比对</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#4定量分析">4.定量分析</a>
+<ul>
+<li><a href="#41-基因表达量估算">4.1 基因表达量估算</a></li>
+<li><a href="#42-相关性分析">4.2 相关性分析</a>
+<ul>
+<li><a href="#421-样品间相关性热图">4.2.1 样品间相关性热图</a></li>
+</ul>
+</li>
+<li><a href="#43-差异基因筛选">4.3 差异基因筛选</a>
+<ul>
+<li><a href="#421-差异表达基因火山图">4.2.1 差异表达基因火山图</a></li>
+<li><a href="#422-差异表达基因聚类热图">4.2.2 差异表达基因聚类热图</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#5-功能富集分析">5. 功能富集分析</a>
+<ul>
+<li><a href="#51-go富集分析">5.1 GO富集分析</a>
+<ul>
+<li><a href="#511-go-term展示">5.1.1 GO term展示</a></li>
+</ul>
+</li>
+<li><a href="#52-kegg富集分析">5.2 KEGG富集分析</a>
+<ul>
+<li><a href="#521-kegg-pathway展示">5.2.1 KEGG Pathway展示</a></li>
+</ul>
+</li>
+<li><a href="#53-参数说明">5.3 参数说明</a></li>
+<li><a href="#6结果文件说明">6.结果文件说明</a></li>
+</ul>
+</li>
+</ul>
+<h2 class="mume-header" id="1概述">1. 概述</h2>
+
+<p>&#x2003; &#x2003; 转录组是某个物种或者特定细胞类型产生的所有转录本的集合。转录组研究能够从整体水平研究基因功能以及基因结构，揭示特定生物学过程以及疾病发生过程中的分子机理，已广泛应用于基础研究、临床诊断和药物研发等领域。</p>
+<p>&#x2003; &#x2003; RNA-seq即转录组测序技术，就是把mRNA，smallRNA，and NONcoding RNA等或者其中一些，用高通量测序技术进行测序分析，反映出它们的表达水平。</p>
+<h2 class="mume-header" id="2实验流程">2.实验流程</h2>
+
+<p>&#x2003; &#x2003; 质检合格的总RNA样本，用带有Oligo（dT）的磁珠富集真核生物mRNA（若为原核生物，则通过试剂盒去除rRNA来富集mRNA）。以mRNA为模板，反转录合成一链cDNA，然后合成二链cDNA，随后磁珠纯化双链cDNA。纯化后双链cDNA再进行末端修复、加A尾并连接测序接头，然后用磁珠进行片段大小选择，最后进行PCR富集得到最终的cDNA文库。<br>
+&#x2003; &#x2003;文库构建完成后，先使用Qubit2.0进行初步定量，随后使用Agilent 2100对文库的insert size进行检测，insert size符合预期后，使用Q-PCR方法对文库的有效浓度进行准确定量，以保证文库质量。<br>
+&#x2003; &#x2003;库检合格后，把不同文库按照有效浓度及目标下机数据量的需求pooling后，采用Illumina Novaseq6000高通量平台对检测合格的文库进行测序，测序策略为PE150。</p>
+<div align="center"><img src="src\images\pre.PNG" height="500"></div>
+<hr>
+<p><img src="src\images\banner-3.jpg"></p>
+<h2 class="mume-header" id="3信息分析">3.信息分析</h2>
+
+<p>生物信息分析流程图如下:</p>
+<div align="center"><img src="src\images\pipeline.png"></div>
+<h3 class="mume-header" id="31数据质控">3.1数据质控</h3>
+
+<h4 class="mume-header" id="311-测序数据格式">3.1.1 测序数据格式</h4>
+
+<br>
+&#x2003; &#x2003;  根据barcode序列区分样本，提取出的数据以标准的fastq格式保存。以双端测序（PE：paired-end）数据为例，每一个样本有read1.fastq和read2.fastq两个文件，分别代表5'->3'和3'->5'的测序结果。Fastq文件格式如下：
+<div align="center"><img src="src\images\fq.png"></div>
+&#x2003; &#x2003; 第1行以@开头，为read的ID。第2行是该read的序列。第4行是该序列的测序质量，每个字符对应为第2行每个碱基的测序质量值，用Phred值+33后，所对应的ASCII字符来表示。碱基质量值（QualityScore）用于反映碱基识别（BaseCalling）出错的概率，Phred值（即通常说的Q20或Q30等）的计算方法为：
+<div align="center"><img src="src\images\qphred.png" width="200" height="30"></div>
+&#x2003; &#x2003; 其中e是碱基错误率。质量评分：质量评分指的是一个碱基的错误概率的对数值。其最初在Phred拼接软件中定义与使用，其后在许多软件中得到使用。其质量得分与错误概率的对应关系见下表：
+<div align="center"><p class="fig"> 质量得分与错误概率对照表</p></div>
+<table><tbody><tr><th>Phred Quality Score</th><th>Probability of incorrect base call</th><th>Base call accuracy</th></tr>
+<tr><td>10</td><td>1 in 10</td><td>90%</td></tr>
+<tr><td>20</td><td>1 in 100 </td><td>99%</td></tr>
+<tr><td>30</td><td>1 in 1000</td><td>99.9%</td></tr>
+<tr><td>40</td><td>1 in 10000</td><td>99.99%</td></tr>
+</tbody></table>
+<p class="para">如上表所示，如果一个碱基的Q值为20，表示这个碱基可能测错的概率为1%。</p>
+<h4 class="mume-header" id="312-数据质量控制">3.1.2 数据质量控制</h4>
+
+<p>&#x2003; &#x2003;在进行数据分析之前，首先需要确保这些Reads有足够高的质量，以保证后续分析的准确。所以要对数据进行严格的质量控制，接头去除和低质量reads清洗，经过一系列的质量控制之后得到的高质量的Clean Data，以FASTQ格式提供。数据过滤方式如下：</p>
+<p>(1)去除含有接头的Reads；<br>
+(2)去除低质量的Reads（包括去除N的比例大于10%的Reads(N表示无法确定碱基信息))；去除质量值Q≤20的碱基数占整条Read的50%以上的Reads）</p>
+<p>&#x2003; &#x2003;fastp软件质控后指标:</p>
+<table>
+<thead>
+<tr>
+<th>Sample</th>
+<th>total reads(M)</th>
+<th>total bases(G)</th>
+<th>clean reads(M)</th>
+<th>clean bases(G)</th>
+<th>valid bases</th>
+<th>Q30 bases</th>
+<th>GC content</th>
+</tr>
+</thead>
+<tbody>
+  {% for item in qc_table %}
+  <tr align='center'>
+      <td>{{ item.sample }}</td>
+      <td>{{ item.total_reads }}</td>
+      <td>{{ item.total_bases }}</td>
+      <td>{{ item.clean_reads }}</td>
+      <td>{{ item.clean_bases }}</td>
+      <td>{{ item.valid }}</td>
+      <td>{{ item.q30 }}</td>
+      <td>{{item.gc}}</td>
+  </tr>
+  {% endfor%}
+</tbody>
+</table>
+<p>&#x2003; &#x2003;多样品合并的fastq质量报告如下:</p>
+<div style="position: relative; padding: 30% 45%;">
+<iframe style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;" src="html\fastp\multiqc_report.html" frameborder="1" scrolling="yes" width="320" height="240"></iframe>
+</div>
+报告详情可参考以下目录
+<p><a href="html/fastp">html/fastp</a><br></a></p>
+<h3 class="mume-header" id="32-比对参考基因组序列与定量">3.2 比对参考基因组序列与定量</h3>
+
+<h4 class="mume-header" id="321-序列比对">3.2.1 序列比对</h4>
+
+<p>&#x2003; &#x2003; 用Hisat2将下机后过滤得到的Clean Reads与参考基因组进行序列比对，获取Reads在参考基因组或基因上的位置信息，以及测序样品特有的序列特征信息。比对软件Hisat2，将转录组测序Reads比对到基因组上，将比对到指定的参考基因组上的Reads称为Mapped Reads，后续的分析流程是基于Mapped Reads进行的。<br>
+&#x2003; &#x2003;各样品比对率如下图:</p>
+<div style="position: relative; padding: 30% 45%;">
+<iframe style="position: absolute; width: 100%; height: 100%; left: 0; top: 0;" src="html\mapping.html" frameborder="1" scrolling="yes" width="320" height="240"></iframe>
+</div>
+<hr>
+<p><img src="src\images\banner-3.jpg"></p>
+<h2 class="mume-header" id="4定量分析">4.定量分析</h2>
+
+<h3 class="mume-header" id="41-基因表达量估算">4.1 基因表达量估算</h3>
+
+<p>&#x2003; &#x2003; 一个基因表达水平的直接体现就是其转录本的丰度情况，转录本丰度程度越高，则基因表达水平越高。准确的定量分析是随后基因表达差异显著性分析的关键。我们采用featureCounts(subread v2.0.1)对Hisat2比对的结果进行表达定量分析，够得到Mapped Reads在基因中的Read Counts;</p>
+<table>
+<thead>
+<tr>
+<th>Geneid</th>
+<th>Chr</th>
+<th>Start</th>
+<th>End</th>
+<th>Strand</th>
+<th>Length</th>
+<th>M2</th>
+<th>M4</th>
+<th>M6</th>
+<th>K2</th>
+<th>K3</th>
+<th>K5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vom2r3</td>
+<td>NC_051336.1&#xFF1B;</td>
+<td>76909;</td>
+<td>77114&#xFF1B;</td>
+<td>+&#xFF1B;</td>
+<td>2540</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Geneid：基因symbol ID;<br>
+  Chr:染色体编号;<br>
+  Start:比对的exon区域起始坐标;<br>
+  End:比对的exon区域终止坐标;<br>
+  Strand:相对参考基因组的+-链向；+表示与参考基因组方向相同，-表示与参考基因组方向相反；<br>
+  Length:外显子区域总长度;<br>
+  Sample_name:项目中涉及到的样品,对应基因中，比对上的reads计数（count）;</p>
+</blockquote>
+<p>原始文件请见:<br>
+
+{% for each_group in vs_group %}
+<a href="result/{{each_group}}/all.counts.{{each_group}}.txt">result/{{each_group}}/all.counts.{{each_group}}.txt</a><br>
+{% endfor %}
+</p>
+<h3 class="mume-header" id="42-相关性分析">4.2 相关性分析</h3>
+
+<h4 class="mume-header" id="421-样品间相关性热图">4.2.1 样品间相关性热图</h4>
+
+<p>&#x2003; &#x2003; 基于count 统计，使用R自带cor()函数计算样品之间log2(count+1)的spearman相关系数，并进行归一化，查看样品之间相关性heatmap;以M_vs_K分组为例，图中基于所有基因表达count量，对多个样品整体表达量进行相关聚类分析；</p>
+<p><img src="result\{{first_group}}\{{first_group}}.cor_heatmap.png"><br>
+<font face="黑体;" size="2">注： 图注中数值越大达标相关性越密切。</font></p>
+<p>其它样品结果如下：<br>
+{% for each_group in vs_group %}
+<a href="result/{{each_group}}/{{each_group}}.cor_heatmap.png">result/{{each_group}}/{{each_group}}.cor_heatmap.png</a><br>
+{% endfor %}
+</p>
+
+<h3 class="mume-header" id="43-差异基因筛选">4.3 差异基因筛选</h3>
+
+<p>&#x2003; &#x2003;下表为使用R包DESeq2分析两组查以后的部分统计表格，后续根据这个表格进行差异筛选分析</p>
+<table>
+<thead>
+<tr>
+<th>symbol</th>
+<th>baseMean</th>
+<th>log2FoldChange</th>
+<th>lfcSE</th>
+<th>stat</th>
+<th>pvalue</th>
+<th>padj</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gp2</td>
+<td>123.996100426809</td>
+<td>6.6113413134043</td>
+<td>0.904298968812844</td>
+<td>7.31101277499366</td>
+<td>2.6513632206151e-13</td>
+<td>5.86693653457709e-09</td>
+</tr>
+<tr>
+<td>LOC691925</td>
+<td>168.022553271878</td>
+<td>10.7831760110645</td>
+<td>2.31338066001433</td>
+<td>4.66121991829815</td>
+<td>3.14340620841422e-06</td>
+<td>0.0231857641932633</td>
+</tr>
+<tr>
+<td>Ceacam1</td>
+<td>344.714389394523</td>
+<td>1.64790289784259</td>
+<td>0.335386508255467</td>
+<td>4.9134442122143</td>
+<td>8.94902048596073e-07</td>
+<td>0.</td>
+</tr>
+<tr>
+<td>Chia</td>
+<td>4892.97447992134</td>
+<td>3.54461976477699</td>
+<td>0.803003209983083</td>
+<td>4.4142037300843</td>
+<td>1.01382451507559e-05</td>
+<td>0.0560847721739817</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<ol>
+<li>baseMean表示所有样本经过归一化系数矫正的read counts（counts/sizeFactor）的均值。</li>
+<li>log2Foldchange表示该基因的表达发生了多大的变化,对差异表达的倍数取以2为底的对数，表达倍数log2FC反映的是不同分组间表达量的差异，这个差异由两部分构成，一种是样本间本身的差异，比如生物学重复样本间基因的表达量就有一定程度的差异，另外一部分就是我们真正感兴趣的，由于分组不同或者实验条件不同造成的差异。</li>
+<li>lfcSE(logfoldchange Standard Error)是对于log2Foldchange估计的标准误差估计。</li>
+<li>stat是Wald统计量，它是由log2Foldchange除以标准差所得。</li>
+<li>pvalue和padj分别代表原始的p值以及经过校正后的p值。</li>
+</ol>
+</blockquote>
+<p>其它样品结果如下：<br>
+{% for each_group in vs_group %}
+<a href="result/{{each_group}}/all_gene_pvalue.tsv">result/{{each_group}}/all_gene_pvalue.tsv</a><br>
+{% endfor %}
+</p>
+<h4 class="mume-header" id="421-差异表达基因火山图">4.2.1 差异表达基因火山图</h4>
+
+<p>&#x2003; &#x2003;火山图可直观显示表达差异显著性基因的整体分布情况，横坐标表示基因在不同样本中的表达倍数变化 (log2 FoldChange)，纵坐标表示表达差异的显著性水平 (-log10 pvalue)。上调基因用红色点表示，下调基因用绿色点表示，如下图所示:<br>
+<img src="result\{{first_group}}\{{first_group}}.volcano_gene.png"><br>
+<font face="黑体;" size="2">注：x轴代表样品之间比较基因表达是上升还是下降，大于1表示上升，小于-1表示下降；y轴表示样品之间差异的置信程度。每个点代表两个样品中同一个基因的mRNA表达量的变化；</font></p>
+<blockquote>
+<p>1.x轴参考线坐标为[-1,1].y轴参考线数值为-log10(pvalue_cutoff)，认为pvalue<0.05 差异显著；<br>
+  2.pvalue小于0.05，log2Foldchange表达倍数取以2为对数后大于1或者小于-1的，作为差异表达基因；</p>
+</blockquote>
+<p>其它样品结果如下：<br>
+
+{% for each_group in vs_group %}
+<a href="result/{{each_group}}/{{each_group}}.volcano_gene.png">result/{{each_group}}/{{each_group}}.volcano_gene.png</a><br>
+{% endfor %}
+</p>
+<h4 class="mume-header" id="422-差异表达基因聚类热图">4.2.2 差异表达基因聚类热图</h4>
+
+<p>&#x2003; &#x2003;取上述条件筛选的差异基因，进行基因表达量的聚类，绘制热图，如下图所示，其中每行代表一个基因，颜色代表上调与下调差异程度；<br>
+<img src="result\{{first_group}}\{{first_group}}.heatmap_gene.png"><br>
+<font face="黑体;" size="2">注：X轴代表每个样品，y轴每一行代表一个基因；</font></p>
+<p>其它样品结果如下：<br>
+  {% for each_group in vs_group %}
+  <a href="result/{{each_group}}/{{each_group}}.heatmap_gene.png">result/{{each_group}}/{{each_group}}.heatmap_gene.png</a><br>
+  {% endfor %}
+</p>
+<hr>
+<p><img src="src\images\banner-3.jpg"></p>
+<h2 class="mume-header" id="5-功能富集分析">5. 功能富集分析</h2>
+
+<p>&#x2003; &#x2003;通过对差异基因进行富集分析，可以找到不同条件下的差异基因与哪些生物学功能或通路显著性相关。我们采用 clusterProfiler 软件对差异基因集进行GO/KEGG富集分析；</p>
+<h3 class="mume-header" id="51-go富集分析">5.1 GO富集分析</h3>
+
+<p>&#x2003; &#x2003;Gene Ontology（简称 GO,<a href="http://www.geneontology.org/">http://www.geneontology.org/</a> ）是基因功能国际标准分类体系。根据实验目的筛选差异基因后，研究差异基因在 Gene Ontology 中的分布状况以期阐明实验中样本差异在基因功能上的体现。GO富集分析方法为GOseq（Young et al, 2010）,此方法基于 Wallenius non-central hyper-geometric distribution。相对于普通的超几何分布(Hyper-geometric distribution)，此分布的特点是从某个类别中抽取个体的概率与从某个类别之外抽取一个个体的概率是不同的，这种概率的不同是通过对基因长度的偏好性进行估计得到的，从而能更为准确地计算出 GO term 被差异基因富集的概率。</p>
+
+<p>&#x2003; &#x2003;GO注释系统是一个有向无环图，包含三个主要分支，即：生物学过程（Biological Process），分子功能（Molecular Function）和细胞组分（Cellular Component）。差异表达基因GO分类统计结果见下图，此图展示的是在差异表达基因背景和全部基因背景下GO各二级功能的基因富集情况，体现两个背景下各二级功能的地位，具有明显比例差异的二级功能说明差异表达基因与全部基因的富集趋势不同，可以重点分析此功能是否与差异相关。</p>
+<p>形式如下表:</p>
+<table>
+<thead>
+<tr>
+<th>ONTOLOGY</th>
+<th>ID</th>
+<th>Description</th>
+<th>GeneRatio</th>
+<th>BgRatio</th>
+<th>pvalue</th>
+<th>p.adjust</th>
+<th>qvalue</th>
+<th>geneID</th>
+<th>Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BP</td>
+<td>GO:0030198</td>
+<td>extracellular matrix organization&quot;</td>
+<td>&quot;75/790&quot;</td>
+<td>&quot;315/18048&quot;</td>
+<td>1.55492158631925e-34</td>
+<td>4.14820864427901e-31</td>
+<td>3.37535866437943e-31</td>
+<td>Thsd4/Hapln2/Lamb3/Cyp2j4/..</td>
+<td>75</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>ONTOLOGY:BP(Biological Process),MF(Molecular Function),CC(Cellular Component) 分类信息<br>
+  Description:GO Term描述；<br>
+  GeneRatio：富集到该GO Term中的基因数目/给定基因的总数目 ；<br>
+  BgRatio：该GO Term中背景基因总数目/该物种所有已知的KEGG功能基因数目 ；<br>
+  pvalue：富集分析统计学显著水平p值 ；p.adjust：矫正后的统计学显著水平p值 ；<br>
+  p.adjust：矫正后的统计学显著水平p值 ；<br>
+  qvalue：矫正后的统计学显著水平q值 ；<br>
+  geneID：富集到GO Term中的差异表达基因集合 ；<br>
+  Count：富集到GO Term中的差异表达基因集合的数目</p>
+</blockquote>
+<p>样品结果如下：<br>
+
+{% for each_group in vs_group %}
+<a href="result/{{each_group}}/GO/GO_enrich.tsv">result/{{first_group}}/GO/GO_enrich.tsv</a><br>
+{% endfor %}
+</p>
+<h4 class="mume-header" id="511-go-term展示">5.1.1 GO term展示</h4>
+
+<p>以下为差异表达基因GO富集分析的bar图:<br>
+<img src="result\{{first_group}}\GO\{{first_group}}.GO_bar.png"><br>
+<font face="黑体;" size="2">注：X轴代表富集的基因count,y轴代表富集的不同GO term；p.adjust为矫正后的pvalue,越接近于0，则表示富集程度越显著。 </font></p>
+<p>以下为差异表达基因GO富集分析的气泡图:<br>
+<img src="result\{{first_group}}\GO\{{first_group}}.GO_dot.png"><br>
+<font face="黑体;" size="2">注：X轴代表富集的基因在总基因中的占比,y轴代表富集的不同GO term；p.adjust为矫正后的pvalue,越接近于0，则表示富集程度越显著；Count代表散点气泡大小，散点越大表示富集基因越多；</font></p>
+<p>以下为差异表达基因GO富集分析的emap图:<br>
+<img src="result\{{first_group}}\GO\{{first_group}}.GO_emap.png"></p>
+<p>以下为差异表达基因GO富集分析cnet图，展示富集功能和基因的包含关系:<br>
+<img src="result\{{first_group}}\GO\{{first_group}}.GO_cnet.png"></p>
+
+<p>绘图结果请见目录<a href="result">result</a><br>
+{% for each_group in vs_group %}
+<a href="result/{{each_group}}/GO/{{each_group}}.GO_bar.png">result/{{each_group}}/GO/{{each_group}}.GO_bar.png</a><br>
+{% endfor %}
+</p>
+
+<p>
+{% for each_group in vs_group %}
+<a href="result/{{each_group}}/GO/{{each_group}}.GO_dot.png">result/{{each_group}}/GO/{{each_group}}.GO_dot.png</a><br>
+{% endfor %}
+</p>
+
+<p>
+{% for each_group in vs_group %}
+<a href="result/{{each_group}}/GO/{{each_group}}.GO_emap.png">result/{{each_group}}/GO/{{each_group}}.GO_emap.png</a><br>
+{% endfor %}
+</p>
+
+<p>
+{% for each_group in vs_group %}
+<a href="result/{{each_group}}/GO/{{each_group}}.GO_cnet.png">result/{{each_group}}/GO/{{each_group}}.GO_cnet.png</a><br>
+{% endfor %}
+</p>
+
+<h3 class="mume-header" id="52-kegg富集分析">5.2 KEGG富集分析</h3>
+
+<p>&#x2003; &#x2003;在生物体内，不同基因相互协调行使其生物学功能，通过Pathway显著性富集能确定差异表达基因参与的最主要生化代谢途径和信号转导途径。KEGG（KyotoEncyclopediaofGenesandGenomes）是系统分析基因功能、基因组信息数据库，它有助于研究者把基因及表达信息作为一个整体网络进行研究。作为Pathway相关的主要公共数据库(Kanehisa,2008）)，KEGG提供的整合代谢途径(pathway)查询十分出色，包括碳水化合物、核苷、氨基酸等的代谢及有机物的生物降解，不仅提供了所有可能的代谢途径，而且对催化各步反应的酶进行了全面的注解，包含有氨基酸序列、PDB库的链接等等，是进行生物体内代谢分析、代谢网络研究的强有力工具。Pathway显著性富集分析以KEGG数据库中Pathway为单位，应用超几何检验，找出与整个基因组背景相比，在差异表达基因中显著性富集的Pathway。计算公式如下:</p>
+<div align="center"><img src="src\images\kegg_pvalue.png"></div>
+以下为差异基因KEGG富集分析结果：
+<p>
+{% for each_group in vs_group %}
+<a href="result/{{each_group}}/KEGG/{{each_group}}.KEGG_enrich.tsv">result/{{each_group}}/KEGG/{{each_group}}.KEGG_enrich.tsv</a><br>
+{% endfor %}
+</p>
+
+<p>形式如下表:</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Description</th>
+<th>GeneRatio</th>
+<th>BgRatio</th>
+<th>pvalue</th>
+<th>p.adjust</th>
+<th>qvalue</th>
+<th>geneID</th>
+<th>Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rno04512</td>
+<td>ECM-receptor interaction</td>
+<td>24/350</td>
+<td>87/8989</td>
+<td>1.23531631268993e-14</td>
+<td>3.59477046992769e-12</td>
+<td>3.05578245770666e-12</td>
+<td>Lamb3/Sdc1/Col1a1/..</td>
+<td>24</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Description:通路描述；<br>
+GeneRatio：富集到该KEGG通路中的基因数目/给定基因的总数目；<br>
+BgRatio：该通路中背景基因总数目/该物种所有已知的KEGG功能基因数目；<br>
+pvalue：富集分析统计学显著水平p值；p.adjust：矫正后的统计学显著水平p值；<br>
+p.adjust：矫正后的统计学显著水平p值；<br>
+qvalue：矫正后的统计学显著水平q值；<br>
+geneID：富集到通路中的差异表达基因集合；<br>
+Count：富集到通路中的差异表达基因集合的数目；</p>
+</blockquote>
+<h4 class="mume-header" id="521-kegg-pathway展示">5.2.1 KEGG Pathway展示</h4>
+
+<p>以下为差异表达基因KEGG富集柱形图:<br>
+<img src="result\{{first_group}}\KEGG\{{first_group}}.KEGG_bar.png"><br>
+<font face="黑体;" size="2">注：X轴代表富集的基因count,y轴代表富集的不同GO term；p.adjust为矫正后的pvalue,越接近于0，则表示富集程度越显著。</font></p>
+<p>以下为差异表达基因KEGG富集气泡图:<br>
+<img src="result\{{first_group}}\KEGG\{{first_group}}.KEGG_dot.png"><br>
+<font face="黑体;" size="2">注：X轴代表富集的基因在总基因中的占比,y轴代表富集的不同GO term；p.adjust为矫正后的pvalue,越接近于0，则表示富集程度越显著；Count代表散点气泡大小，散点越大表示富集基因越多； </font></p>
+<p>以下为差异表达基因KEGG富集分析emap图，展示各富集通路之间共有基因关系:<br>
+<img src="result\{{first_group}}\KEGG\{{first_group}}.KEGG_emap.png"></p>
+<p>以下为差异表达基因KEGG富集分析cnet图，展示富集通路和基因的包含关系:<br>
+<img src="result\{{first_group}}\KEGG\{{first_group}}.KEGG_cnet.png"></p>
+<p>绘图结果请见目录<a href="result">result</a></p>
+<p>
+{% for each_group in vs_group %}
+<a href="result/{{each_group}}/KEGG/{{each_group}}.KEGG_bar.png">result/{{each_group}}/KEGG/{{each_group}}.KEGG_bar.png</a><br>
+{% endfor %}
+</p>
+
+<p>
+{% for each_group in vs_group %}
+<a href="result/{{each_group}}/KEGG/{{each_group}}.KEGG_dot.png">result/{{each_group}}/KEGG/{{each_group}}.KEGG_dot.png</a><br>
+{% endfor %}
+</p>
+<p>
+{% for each_group in vs_group %}
+<a href="result/{{each_group}}/KEGG/{{each_group}}.KEGG_emap.png">result/{{each_group}}/KEGG/{{each_group}}.KEGG_emap.png</a><br>
+{% endfor %}
+</p>
+<p>
+  {% for each_group in vs_group %}
+  <a href="result/{{each_group}}/KEGG/{{each_group}}.KEGG_cnet.png">result/{{each_group}}/KEGG/{{each_group}}.KEGG_cnet.png</a><br>
+  {% endfor %}
+</p>
+
+<h3 class="mume-header" id="53-参数说明">5.3 参数说明</h3>
+
+<p>&#x2003; &#x2003;enrichGO 与enrichKEGG分析中 中阈值pvalueCutoff，qvalueCutoff均为0.05；<br>
+<mark>需要注意</mark>：富集阈值如在cutoff0.05无法富集时，富集阈值将修改为1，结果为全部输出,仅供参考！</p>
+<h3 class="mume-header" id="6结果文件说明">6.结果文件说明</h3>
+
+<table>
+<thead>
+<tr>
+<th>结果文件说明</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>*.fpkm_box.png</td>
+<td>分组箱式图</td>
+</tr>
+<tr>
+<td>*.counts.txt</td>
+<td>表达定量原始文件</td>
+</tr>
+<tr>
+<td>*fpkm_box.pdf</td>
+<td>样品FPKM分布分组箱式图</td>
+</tr>
+<tr>
+<td>*.gene_FPKM.tsv</td>
+<td>箱式图数据源文件</td>
+</tr>
+<tr>
+<td>*.heatmap_gene.png</td>
+<td>差异基因做聚类热图</td>
+</tr>
+<tr>
+<td>*.PCA.png</td>
+<td>样品分组PCA</td>
+</tr>
+<tr>
+<td>*.volcano_gene.png</td>
+<td>差异基因火山图</td>
+</tr>
+<tr>
+<td>GO_enrich.tsv</td>
+<td>GO terms富集结果文件</td>
+</tr>
+<tr>
+<td>*.KEGG_enrich.tsv</td>
+<td>KEGG通路富集结果文件</td>
+</tr>
+<tr>
+<td>*_bar*.png</td>
+<td>富集柱形图</td>
+</tr>
+<tr>
+<td>*_dot*.png</td>
+<td>富集气泡图</td>
+</tr>
+<tr>
+<td>*_emap*.png</td>
+<td>富集emap图</td>
+</tr>
+<tr>
+<td><em>.enrich.go.</em>.DGA.tree.png</td>
+<td>GO Terms有向无环图</td>
+</tr>
+<tr>
+<td>*_cnet*.png</td>
+<td>富集cnet图</td>
+</tr>
+</tbody>
+</table>
+<hr>
+
+
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+    
+    
+  
+    </body></html>
