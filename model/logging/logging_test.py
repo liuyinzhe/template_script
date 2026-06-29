@@ -2,6 +2,45 @@
 # -*- coding: UTF-8 -*-
 import logging
 
+# ╔═════════════════════════════════════════════════════════════╗
+# ║                      日志系统配置                          ║
+# ╚═════════════════════════════════════════════════════════════╝
+
+def setup_logging(output_dir: str) -> logging.Logger:
+    """
+    配置双通道日志:
+      - 文件通道 (extraction.log):  记录 INFO 及以上级别的所有日志
+      - 终端通道 (stderr):          仅输出 WARNING 及以上级别的警告和错误
+
+    参数:
+        output_dir: 输出目录路径，日志文件将写入该目录下的 extraction.log
+
+    返回:
+        配置好的 Logger 实例
+    """
+    # 创建日志器，名称固定为 extract_genes
+    logger = logging.getLogger("extract_genes")
+    logger.setLevel(logging.DEBUG)  # 全局设为 DEBUG，由各 handler 自行过滤
+
+    # ── 文件 Handler: 记录完整日志，方便事后排查 ──
+    log_path = os.path.join(output_dir, "extraction.log")
+    file_handler = logging.FileHandler(log_path)
+    file_handler.setLevel(logging.INFO)
+    file_handler.setFormatter(
+        logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
+    )
+
+    # ── 终端 Handler: 仅输出警告和错误，避免干扰正常输出 ──
+    console_handler = logging.StreamHandler(sys.stderr)
+    console_handler.setLevel(logging.WARNING)
+    console_handler.setFormatter(
+        logging.Formatter("[%(levelname)s] %(message)s")
+    )
+
+    logger.addHandler(file_handler)
+    logger.addHandler(console_handler)
+    return logger
+
 
 LOG_FORMAT = "%(asctime)s %(name)s %(levelname)s %(pathname)s %(message)s "#配置输出日志格式
 #配置输出时间的格式，注意月份和天数不要搞乱了
