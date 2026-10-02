@@ -314,7 +314,32 @@ def GetAllFilePaths(pwd,wildcard='*'):
         elif child.is_file():
             files_lst.append(str(child))
     return files_lst
- 
+
+def natural_key(text):
+    """自然排序 key：chr1 < chr2 < ... < chr10 < chrX。"""
+    return [int(part) if part.isdigit() else part.lower()
+            for part in re.split(r"(\d+)", str(text))]
+
+
+def GetAllFilePaths(pwd, wildcard="*", exclude=None):
+    """获取目录下(含子目录)所有匹配文件的全路径列表(排除符号链接/目录)。
+
+    :param pwd: 目录
+    :param wildcard: 通配符, 例如 ``*.txt.gz``
+    :param exclude: 需要排除的文件名通配符(可迭代), 例如 ``['*nhomalt_dic.pkl.gz']``
+    :return: 按自然顺序排序后的路径字符串列表
+    """
+    exclude = list(exclude or ())
+    files_lst = []
+    target_path = Path(pwd)
+    for child in target_path.rglob(wildcard):
+        if child.is_symlink() or child.is_dir() or not child.is_file():
+            continue
+        if any(child.match(pat) for pat in exclude):
+            continue
+        files_lst.append(str(child))
+    # 排序保证多文件合并顺序可复现(旧版 rglob 顺序依赖文件系统)
+    return sorted(files_lst, key=natural_key)
  
 def GetAllFileNames(pwd):
     '''
